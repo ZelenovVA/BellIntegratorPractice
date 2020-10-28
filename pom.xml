@@ -8,11 +8,12 @@
         <version>2.3.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>ru.bellintegrator.zelenov</groupId>
-    <artifactId>practice</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>practice</name>
-    <description>Practic project for Bell Integrator</description>
+        <artifactId>practice</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <name>practice</name>
+    <description>Practice project for Bell Integrator</description>
 
     <properties>
         <java.version>1.8</java.version>
