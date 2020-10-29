@@ -2,8 +2,10 @@ package ru.bellintegrator.zelenov.practice.model;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Пользователь
@@ -11,6 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "User")
 @Data
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -27,7 +30,7 @@ public class User {
     /**
      * Имя
      */
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
     /**
@@ -45,7 +48,7 @@ public class User {
     /**
      * Должность
      */
-    @Column(name = "position", nullable = false)
+    @Column(name = "position", nullable = false, length = 100)
     private String position;
 
     /**
@@ -61,13 +64,6 @@ public class User {
     private boolean isIdentified;
 
     /**
-     * Офис организации, где работает пользователь
-     */
-    @OneToOne
-    @JoinColumn(name = "office_id")
-    private Office office;
-
-    /**
      * Документ, удостоверяющий личность
      */
     @OneToOne
@@ -77,8 +73,8 @@ public class User {
     /**
      * Гражданство
      */
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "country_code")
-    private Country country;
+    private Set<Country> countries;
 
 }

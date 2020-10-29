@@ -24,21 +24,25 @@ public class BaseEntity {
     /**
      * Имя
      */
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     /**
      * Адрес
      */
+    @Column(name = "address", nullable = false, length = 100)
     private String address;
 
     /**
      * Контактный номер телефона
      */
+    @Column(name = "phone")
     private String phone;
 
     /**
      * Флаг активности
      */
-    private boolean isActive;
+    @Column(name = "is_active")
+    private boolean isActive=true;
 
 }
