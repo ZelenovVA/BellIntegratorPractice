@@ -1,8 +1,6 @@
 package ru.bellintegrator.zelenov.practice.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +12,7 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name = "country")
+@Table(name = "Country")
 public class Country {
 
     /**
@@ -22,7 +20,7 @@ public class Country {
      */
     @Id
     @Column(name = "citizenship_code")
-    private Integer countryCode;
+    private Integer citizenshipCode;
 
     /**
      * Название страны

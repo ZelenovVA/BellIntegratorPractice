@@ -66,8 +66,8 @@ public class User {
     /**
      * Документ, удостоверяющий личность
      */
-    @OneToOne
-    @JoinColumn(name = "doc_number")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "doc_id")
     private Document document;
 
     /**
@@ -76,5 +76,4 @@ public class User {
     @OneToMany
     @JoinColumn(name = "country_code")
     private Set<Country> countries;
-
 }

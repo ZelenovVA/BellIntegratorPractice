@@ -3,7 +3,7 @@ package ru.bellintegrator.zelenov.practice.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Организация
@@ -23,20 +23,20 @@ public class Organization extends BaseEntity {
     /**
      * ИНН организации
      */
-    @Column(name="inn", nullable = false)
-    private Long inn;
+    @Column(name="inn", nullable = false, length = 12)
+    private String inn;
 
     /**
      * КПП организации
      */
-    @Column(name = "kpp", nullable = false)
-    private Long kpp;
+    @Column(name = "kpp", nullable = false, length = 9)
+    private String kpp;
 
     /**
      * Список офисов организации
      */
-    @OneToMany
-    @JoinColumn(name = "office_id")
-    private List<Office> offices;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "organization_id")
+    private Set<Office> offices;
 
 }
