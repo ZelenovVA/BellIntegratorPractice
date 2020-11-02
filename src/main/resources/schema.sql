@@ -34,6 +34,7 @@ doc_type_code INTEGER COMMENT 'Код документа',
 CONSTRAINT PK_Document_id PRIMARY KEY Document(id),
 CONSTRAINT FK_Document_doc_type_code FOREIGN KEY Document(doc_type_code) REFERENCES ON DocumentType(doc_code)
 );
+CREATE INDEX UX_Document_id ON Document(id);
 CREATE INDEX UX_Document_doc_type_code ON Document(doc_type_code);
 COMMENT ON TABLE Document AS 'Документ';
 
@@ -54,9 +55,10 @@ office_id BIGINT COMMENT 'Уникальный идентификатор офи
 doc_id BIGINT COMMENT 'Документ, удостоверяющий личности',
 
 CONSTRAINT PK_User_id PRIMARY KEY User(id),
-CONSTRAINT FK_User_doc_number FOREIGN KEY User(doc_number) REFERENCES ON Document(doc_number),
+CONSTRAINT FK_User_doc_id FOREIGN KEY User(doc_id) REFERENCES ON Document(doc_id),
 CONSTRAINT FK_User_office_id FOREIGN KEY User(office_id) REFERENCES ON Office(id)
 );
+CREATE INDEX UX_User_id ON User(id);
 CREATE INDEX IX_User_office_id ON User(office_id);
 CREATE INDEX IX_User_first_name ON User(first_name);
 CREATE INDEX IX_User_last_name ON User(last_name);
@@ -80,6 +82,7 @@ organization_id BIGINT NOT NULL COMMENT 'Уникальный идентифик
 CONSTRAINT PK_Office_id PRIMARY KEY Office(id),
 CONSTRAINT FK_Office_organization_id FOREIGN KEY Office(organization_id) REFERENCES ON Organization(id)
 );
+CREATE INDEX UX_Office_id ON Office(id);
 CREATE INDEX IX_Office_organization_id ON Office(organization_id);
 CREATE INDEX UX_Office_name ON Office(name);
 CREATE INDEX UX_Office_phone ON Office(phone);
