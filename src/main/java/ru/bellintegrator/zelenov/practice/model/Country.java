@@ -2,10 +2,7 @@ package ru.bellintegrator.zelenov.practice.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Гражданство пользователя {@link User}
@@ -15,11 +12,14 @@ import javax.persistence.Table;
 @Table(name = "Country")
 public class Country {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     /**
      * Код страны
      */
-    @Id
-    @Column(name = "citizenship_code")
+        @Column(name = "citizenship_code")
     private Integer citizenshipCode;
 
     /**

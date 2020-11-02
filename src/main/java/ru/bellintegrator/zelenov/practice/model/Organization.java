@@ -1,6 +1,7 @@
 package ru.bellintegrator.zelenov.practice.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "Organization")
+@NoArgsConstructor
 public class Organization extends BaseEntity {
 
     /**
@@ -33,7 +35,7 @@ public class Organization extends BaseEntity {
     private String kpp;
 
     /**
-     * Список офисов организации
+     * Список офисов{@link Office} организации
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "organization_id")

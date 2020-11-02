@@ -19,18 +19,23 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Службеное поле Hibernate
+     */
+    @Version
+    private Integer version;
+
+    /**
+     * Имя документа
+     */
+    @Column(name = "doc_name")
+    private String name;
 
     /**
      * Номер документа
      */
     @Column(name = "doc_number")
     private String docNumber;
-
-    /**
-     * Службеное поле Hibernate
-     */
-    @Version
-    private Integer version;
 
     /**
      * Дата выдачи документа
@@ -41,9 +46,9 @@ public class Document {
     private LocalDate docDate;
 
     /**
-     * Прользователь, которому принадлежит документ
+     * Пользователь, которому принадлежит документ
      */
-    @OneToOne(mappedBy = "document", cascade = {
+    @OneToOne(mappedBy = "document",cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.DETACH,
@@ -58,6 +63,6 @@ public class Document {
      * в регистрирующий орган
      */
     @OneToOne
-    @JoinColumn(name = "doc_type_code")
+    @JoinColumn(name = "doc_type_id")
     private DocumentType docType;
 }
