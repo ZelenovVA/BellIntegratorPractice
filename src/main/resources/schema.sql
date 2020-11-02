@@ -1,11 +1,16 @@
 -- Таблица гражданств --
 CREATE TABLE IF NOT EXISTS Country
 (
+id IDENTITY COMMENT 'Уникальный идентификатор',
 citizenship_code INTEGER COMMENT 'Код государтсва',
 citizenship_name VARCHAR (100) COMMENT 'Название государтсва',
+user_id BIGINT COMMENT 'Уникальный идентификатор пользователя',
 
-CONSTRAINT PK_country_citizenship_code PRIMARY KEY Country(citizenship_code)
+CONSTRAINT PK_country_id PRIMARY KEY Country(id),
+CONSTRAINT FK_Country_user_id FOREIGN KEY Country(user_id) REFERENCES ON User(id)
 );
+CREATE INDEX UX_Country_id ON Country(id);
+CREATE INDEX IX_Country_user_id ON Country(user_id);
 COMMENT ON TABLE Country AS 'Гражданство';
 
 -----------------------------------------------------------------------------
@@ -13,11 +18,13 @@ COMMENT ON TABLE Country AS 'Гражданство';
 -- Таблица типов документов, удостоверяющих личность --
 CREATE TABLE IF NOT EXISTS DocumentType
 (
+id IDENTITY COMMENT 'Уникальный идентификатор',
 doc_code INTEGER COMMENT 'Код документа',
 doc_name VARCHAR (100) NOT NULL COMMENT 'Наименование документа',
 
-CONSTRAINT PK_DocumentType_doc_code PRIMARY KEY DocumentType(doc_code)
+CONSTRAINT PK_DocumentType_id PRIMARY KEY DocumentType(id)
 );
+CREATE INDEX UX_DocumentType_id ON DocumentType(id);
 COMMENT ON TABLE DocumentType AS 'Тип документа';
 
 -----------------------------------------------------------------------------
@@ -27,15 +34,19 @@ CREATE TABLE IF NOT EXISTS Document
 (
 id IDENTITY COMMENT 'Уникальный идентификатор документа',
 version INTEGER NOT NULL COMMENT 'Служебное поле Hibernate',
+doc_name varchar (50) COMMENT 'Имя документа',
 doc_number varchar(10) COMMENT 'Номер документа',
 doc_date DATE COMMENT 'Дата выдачи документа',
-doc_type_code INTEGER COMMENT 'Код документа',
+user_id BIGINT COMMENT 'Уникальный идентификатор пользователя',
+doc_type_id BIGINT COMMENT 'Уникальный идентификатор типа документа',
 
 CONSTRAINT PK_Document_id PRIMARY KEY Document(id),
-CONSTRAINT FK_Document_doc_type_code FOREIGN KEY Document(doc_type_code) REFERENCES ON DocumentType(doc_code)
+CONSTRAINT FK_Document_user_id FOREIGN KEY Document(user_id) REFERENCES ON User(id),
+CONSTRAINT FK_Document_doc_id FOREIGN KEY Document(doc_type_id) REFERENCES ON DocumentType(id)
 );
 CREATE INDEX UX_Document_id ON Document(id);
-CREATE INDEX UX_Document_doc_type_code ON Document(doc_type_code);
+CREATE INDEX IX_Document_user_id ON Document(user_id);
+CREATE INDEX IX_Document_doc_type_code ON Document(doc_type_code);
 COMMENT ON TABLE Document AS 'Документ';
 
 --------------------------------------------------------------------------------------------------------------
@@ -52,14 +63,15 @@ position VARCHAR (100) NOT NULL COMMENT 'Должность',
 phone VARCHAR (11) COMMENT 'Контактный номер телефона',
 is_identified BOOLEAN default true COMMENT 'Флаг идентификации',
 office_id BIGINT COMMENT 'Уникальный идентификатор офиса',
-doc_id BIGINT COMMENT 'Документ, удостоверяющий личности',
+doc_id BIGINT COMMENT 'Уникальный идентификатор документа',
 
 CONSTRAINT PK_User_id PRIMARY KEY User(id),
-CONSTRAINT FK_User_doc_id FOREIGN KEY User(doc_id) REFERENCES ON Document(doc_id),
 CONSTRAINT FK_User_office_id FOREIGN KEY User(office_id) REFERENCES ON Office(id)
+CONSTRAINT FK_User_doc_id FOREIGN KEY User(doc_id) REFERENCES ON Document(id)
 );
-CREATE INDEX UX_User_id ON User(id);
-CREATE INDEX IX_User_office_id ON User(office_id);
+CREATE INDEX UX_User_id User ON User(id);
+CREATE INDEX IX_User_doc_id User ON User(doc_id);
+CREATE INDEX IX_User_office_id User ON User(office_id);
 CREATE INDEX IX_User_first_name ON User(first_name);
 CREATE INDEX IX_User_last_name ON User(last_name);
 CREATE INDEX IX_User_middle_name ON User(middle_name);
@@ -96,16 +108,17 @@ CREATE TABLE IF NOT EXISTS Organization
 (
 id IDENTITY COMMENT 'Уникальный идентификатор',
 version INTEGER NOT NULL COMMENT 'Служебное поле Hibernate',
-name VARCHAR (50) NOT NULL UNIQUE COMMENT 'Имя организации',
+name VARCHAR (50) NOT NULL COMMENT 'Имя организации',
 full_name VARCHAR (100) NOT NULL COMMENT 'Полное название организации',
-inn VARCHAR(12) NOT NULL UNIQUE COMMENT 'ИНН организации',
-kpp VARCHAR(9) NOT NULL UNIQUE COMMENT 'КПП организации',
+inn VARCHAR(12) NOT NULL COMMENT 'ИНН организации',
+kpp VARCHAR(9) NOT NULL COMMENT 'КПП организации',
 address VARCHAR (100) NOT NULL COMMENT 'Юридический адрес организации',
 phone VARCHAR (11) COMMENT 'Номер телефона организации',
 is_active BOOLEAN default true COMMENT 'Флаг активности',
 
 CONSTRAINT PK_Organization_id PRIMARY KEY Organization(id),
 );
+CREATE INDEX UX_Organization_id ON Organization(id);
 CREATE INDEX UX_Organization_name ON Organization(name);
 CREATE INDEX UX_Organization_inn ON Organization(inn);
 CREATE INDEX IX_Organization_is_active ON Organization(is_active);
