@@ -2,6 +2,7 @@
 CREATE TABLE IF NOT EXISTS Country
 (
 id IDENTITY COMMENT 'Уникальный идентификатор',
+version INTEGER COMMENT 'Служебное поле Hibernate',
 citizenship_code INTEGER COMMENT 'Код государтсва',
 citizenship_name VARCHAR (100) COMMENT 'Название государтсва',
 user_id BIGINT COMMENT 'Уникальный идентификатор пользователя',
@@ -19,8 +20,9 @@ COMMENT ON TABLE Country AS 'Гражданство';
 CREATE TABLE IF NOT EXISTS DocumentType
 (
 id IDENTITY COMMENT 'Уникальный идентификатор',
+version INTEGER COMMENT 'Служебное поле Hibernate',
 doc_code INTEGER COMMENT 'Код документа',
-doc_name VARCHAR (100) NOT NULL COMMENT 'Наименование документа',
+doc_name VARCHAR (150) COMMENT 'Наименование документа',
 
 CONSTRAINT PK_DocumentType_id PRIMARY KEY DocumentType(id)
 );
@@ -33,12 +35,12 @@ COMMENT ON TABLE DocumentType AS 'Тип документа';
 CREATE TABLE IF NOT EXISTS Document
 (
 id IDENTITY COMMENT 'Уникальный идентификатор документа',
-version INTEGER NOT NULL COMMENT 'Служебное поле Hibernate',
+version INTEGER COMMENT 'Служебное поле Hibernate',
 doc_name varchar (50) COMMENT 'Имя документа',
 doc_number varchar(10) COMMENT 'Номер документа',
 doc_date DATE COMMENT 'Дата выдачи документа',
-user_id BIGINT COMMENT 'Уникальный идентификатор пользователя',
-doc_type_id BIGINT COMMENT 'Уникальный идентификатор типа документа',
+user_id BIGINT NOT NULL COMMENT 'Уникальный идентификатор пользователя',
+doc_type_id BIGINT NOT NULL COMMENT 'Уникальный идентификатор типа документа',
 
 CONSTRAINT PK_Document_id PRIMARY KEY Document(id),
 CONSTRAINT FK_Document_user_id FOREIGN KEY Document(user_id) REFERENCES ON User(id),
@@ -62,7 +64,7 @@ middle_name VARCHAR (50) COMMENT 'Отчество пользователя',
 position VARCHAR (100) NOT NULL COMMENT 'Должность',
 phone VARCHAR (11) COMMENT 'Контактный номер телефона',
 is_identified BOOLEAN default true COMMENT 'Флаг идентификации',
-office_id BIGINT COMMENT 'Уникальный идентификатор офиса',
+office_id BIGINT NOT NULL COMMENT 'Уникальный идентификатор офиса',
 doc_id BIGINT COMMENT 'Уникальный идентификатор документа',
 
 CONSTRAINT PK_User_id PRIMARY KEY User(id),
@@ -84,10 +86,10 @@ COMMENT ON TABLE User AS 'Пользователь';
 CREATE TABLE IF NOT EXISTS Office
 (
 id IDENTITY COMMENT 'Уникальный идентификатор',
-version INTEGER NOT NULL COMMENT 'Служебное поле Hibernate',
-name VARCHAR (50) NOT NULL UNIQUE COMMENT 'Имя офиса',
-address VARCHAR (100) NOT NULL COMMENT 'Адрем офиса',
-phone VARCHAR (11) NOT NULL UNIQUE COMMENT 'Номер телефона офиса',
+version INTEGER COMMENT 'Служебное поле Hibernate',
+name VARCHAR (50) COMMENT 'Имя офиса',
+address VARCHAR (150) COMMENT 'Адрем офиса',
+phone VARCHAR (11) COMMENT 'Номер телефона офиса',
 is_active BOOLEAN default true COMMENT 'Флаг активности',
 organization_id BIGINT NOT NULL COMMENT 'Уникальный идентификатор организации',
 
@@ -107,12 +109,12 @@ COMMENT ON TABLE Office AS 'Офис';
 CREATE TABLE IF NOT EXISTS Organization
 (
 id IDENTITY COMMENT 'Уникальный идентификатор',
-version INTEGER NOT NULL COMMENT 'Служебное поле Hibernate',
+version INTEGER COMMENT 'Служебное поле Hibernate',
 name VARCHAR (50) NOT NULL COMMENT 'Имя организации',
 full_name VARCHAR (100) NOT NULL COMMENT 'Полное название организации',
 inn VARCHAR(12) NOT NULL COMMENT 'ИНН организации',
 kpp VARCHAR(9) NOT NULL COMMENT 'КПП организации',
-address VARCHAR (100) NOT NULL COMMENT 'Юридический адрес организации',
+address VARCHAR (150) NOT NULL COMMENT 'Юридический адрес организации',
 phone VARCHAR (11) COMMENT 'Номер телефона организации',
 is_active BOOLEAN default true COMMENT 'Флаг активности',
 
