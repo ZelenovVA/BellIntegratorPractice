@@ -1,9 +1,9 @@
 package ru.bellintegrator.zelenov.practice.model;
 
-
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -13,10 +13,13 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "Document")
+@OptimisticLocking(type = OptimisticLockType.VERSION)
+@NoArgsConstructor
 public class Document {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     /**
@@ -28,20 +31,19 @@ public class Document {
     /**
      * Имя документа
      */
-    @Column(name = "doc_name")
+    @Column(name = "doc_name", length = 50)
     private String name;
 
     /**
      * Номер документа
      */
-    @Column(name = "doc_number")
+    @Column(name = "doc_number", length = 10)
     private String docNumber;
 
     /**
      * Дата выдачи документа
      */
     @Column(name = "doc_date")
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
     @Temporal(TemporalType.DATE)
     private LocalDate docDate;
 

@@ -1,7 +1,9 @@
 package ru.bellintegrator.zelenov.practice.model;
 
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 import javax.persistence.*;
 
 /**
@@ -13,6 +15,8 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "DocumentType")
+@OptimisticLocking(type = OptimisticLockType.VERSION)
+@NoArgsConstructor
 public class DocumentType {
 
     @Id
@@ -21,15 +25,21 @@ public class DocumentType {
     private Long id;
 
     /**
+     * Служебное поле Hibernate
+     */
+    @Version
+    private Integer version;
+
+    /**
      * Код типа документа
      */
-    @Column(name = "doc_code", nullable = false)
+    @Column(name = "doc_code")
     private Integer code;
 
     /**
      * Наименование типа документа
      */
-    @Column(name = "doc_name", nullable = false, length = 100)
+    @Column(name = "doc_name", length = 150)
     private String name;
 
 }

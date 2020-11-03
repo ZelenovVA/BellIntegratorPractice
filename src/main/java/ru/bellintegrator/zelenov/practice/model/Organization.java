@@ -2,8 +2,8 @@ package ru.bellintegrator.zelenov.practice.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,8 +37,7 @@ public class Organization extends BaseEntity {
     /**
      * Список офисов{@link Office} организации
      */
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "organization_id")
-    private Set<Office> offices;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organization")
+    private Set<Office> offices=new HashSet<>();
 
 }

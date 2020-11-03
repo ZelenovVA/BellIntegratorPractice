@@ -1,6 +1,7 @@
 package ru.bellintegrator.zelenov.practice.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @MappedSuperclass
 @Data
 @OptimisticLocking(type = OptimisticLockType.VERSION)
+@NoArgsConstructor
 public class BaseEntity {
 
     @Id
@@ -33,7 +35,7 @@ public class BaseEntity {
     /**
      * Адрес
      */
-    @Column(name = "address", nullable = false, length = 100)
+    @Column(name = "address", nullable = false, length = 150)
     private String address;
 
     /**

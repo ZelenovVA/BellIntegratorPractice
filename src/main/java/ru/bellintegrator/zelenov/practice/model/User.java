@@ -1,10 +1,11 @@
 package ru.bellintegrator.zelenov.practice.model;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,11 +15,12 @@ import java.util.Set;
 @Table(name = "User")
 @Data
 @NoArgsConstructor
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
     /**
@@ -36,13 +38,13 @@ public class User {
     /**
      * Фамилия
      */
-    @Column(name = "second_name")
+    @Column(name = "second_name", length = 50)
     private String secondName;
 
     /**
      * Отчество
      */
-    @Column(name = "middle_name")
+    @Column(name = "middle_name", length = 50)
     private String middleName;
 
     /**
@@ -54,7 +56,7 @@ public class User {
     /**
      * Телефон
      */
-    @Column(name = "phone")
+    @Column(name = "phone", length = 11)
     private String phone;
 
     /**
@@ -64,16 +66,28 @@ public class User {
     private boolean isIdentified;
 
     /**
-     * Документ, удостоверяющий личность
+     * Офис{@link Office}, за которым закреплен пользователь
+     */
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.REFRESH
+    })
+    @JoinColumn(name = "office_id")
+    private Office office;
+
+    /**
+     * Документ{@link Document}, удостоверяющий личность
      */
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "doc_id")
     private Document document;
 
     /**
-     * Гражданство
+     * Гражданство{@link Country}
      */
     @OneToMany
     @JoinColumn(name = "country_code")
-    private Set<Country> countries;
+    private Set<Country> countries=new HashSet<>();
 }
