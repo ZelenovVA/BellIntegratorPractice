@@ -1,15 +1,18 @@
 package ru.bellintegrator.zelenov.practice.model;
 
 import lombok.Data;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 
 import javax.persistence.*;
 
 /**
- * Родительский класс для подклассов Организация {@link Organization} и Офис {@link Office}
+ * Родительский класс для подклассов Организация{@link Organization} и Офис{@link Office}
  */
 @MappedSuperclass
 @Data
-public abstract class BaseEntity {
+@OptimisticLocking(type = OptimisticLockType.VERSION)
+public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +39,7 @@ public abstract class BaseEntity {
     /**
      * Контактный номер телефона
      */
-    @Column(name = "phone")
+    @Column(name = "phone", length = 11)
     private String phone;
 
     /**
