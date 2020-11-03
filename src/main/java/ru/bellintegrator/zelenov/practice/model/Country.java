@@ -1,6 +1,8 @@
 package ru.bellintegrator.zelenov.practice.model;
 
 import lombok.Data;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 
 import javax.persistence.*;
 
@@ -10,11 +12,18 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "Country")
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * Служебное поле Hibernate
+     */
+    @Version
+    private Integer version;
 
     /**
      * Код страны
@@ -25,6 +34,6 @@ public class Country {
     /**
      * Название страны
      */
-    @Column(name = "citizenship_name")
+    @Column(name = "citizenship_name", length = 100)
     private String citizenshipName;
 }
