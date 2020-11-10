@@ -1,12 +1,20 @@
-package ru.bellintegrator.zelenov.practice.model;
+package ru.bellintegrator.zelenov.practice.model.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import ru.bellintegrator.zelenov.practice.model.country.Country;
+import ru.bellintegrator.zelenov.practice.model.office.Office;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Пользователь
@@ -15,7 +23,6 @@ import java.util.Set;
 @Table(name = "User")
 @Data
 @NoArgsConstructor
-@OptimisticLocking(type = OptimisticLockType.VERSION)
 public class User {
 
     @Id
@@ -66,28 +73,16 @@ public class User {
     private boolean isIdentified;
 
     /**
-     * Офис{@link Office}, за которым закреплен пользователь
+     * Офис, за которым закреплен сотрудник
      */
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.DETACH,
-            CascadeType.REFRESH
-    })
-    @JoinColumn(name = "office_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "office_id", nullable = false)
     private Office office;
 
     /**
-     * Документ{@link Document}, удостоверяющий личность
+     * Гражданство пользователя
      */
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "doc_id")
-    private Document document;
-
-    /**
-     * Гражданство{@link Country}
-     */
-    @OneToMany
-    @JoinColumn(name = "country_code")
-    private Set<Country> countries=new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
 }

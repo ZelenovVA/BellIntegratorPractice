@@ -1,10 +1,16 @@
-package ru.bellintegrator.zelenov.practice.model;
+package ru.bellintegrator.zelenov.practice.model.documentType;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
-import javax.persistence.*;
+import ru.bellintegrator.zelenov.practice.model.document.Document;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Тип документа{@link Document}, в соответствии с Приложением N 3
@@ -15,7 +21,6 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "DocumentType")
-@OptimisticLocking(type = OptimisticLockType.VERSION)
 @NoArgsConstructor
 public class DocumentType {
 
@@ -33,13 +38,12 @@ public class DocumentType {
     /**
      * Код типа документа
      */
-    @Column(name = "doc_code")
-    private Integer code;
+    @Column(name = "doc_code", length = 5, nullable = false)
+    private String code;
 
     /**
      * Наименование типа документа
      */
-    @Column(name = "doc_name", length = 150)
+    @Column(name = "doc_name", length = 150, nullable = false)
     private String name;
-
 }

@@ -1,11 +1,16 @@
-package ru.bellintegrator.zelenov.practice.model;
+package ru.bellintegrator.zelenov.practice.model.country;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
+import ru.bellintegrator.zelenov.practice.model.user.User;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Гражданство пользователя {@link User}
@@ -13,7 +18,6 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "Country")
-@OptimisticLocking(type = OptimisticLockType.VERSION)
 @NoArgsConstructor
 public class Country {
 
@@ -31,12 +35,12 @@ public class Country {
     /**
      * Код страны
      */
-        @Column(name = "citizenship_code")
-    private Integer citizenshipCode;
+    @Column(name = "citizenship_code", length = 5,nullable = false)
+    private String citizenshipCode;
 
     /**
      * Название страны
      */
-    @Column(name = "citizenship_name", length = 100)
+    @Column(name = "citizenship_name", length = 100, nullable = false)
     private String citizenshipName;
 }

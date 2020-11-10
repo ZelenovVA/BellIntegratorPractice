@@ -1,10 +1,21 @@
-package ru.bellintegrator.zelenov.practice.model;
+package ru.bellintegrator.zelenov.practice.model.document;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
-import javax.persistence.*;
+import ru.bellintegrator.zelenov.practice.model.documentType.DocumentType;
+import ru.bellintegrator.zelenov.practice.model.user.User;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import java.time.LocalDate;
 
 /**
@@ -13,13 +24,10 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "Document")
-@OptimisticLocking(type = OptimisticLockType.VERSION)
 @NoArgsConstructor
 public class Document {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     /**
@@ -50,12 +58,9 @@ public class Document {
     /**
      * Пользователь, которому принадлежит документ
      */
-    @OneToOne(mappedBy = "document",cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.DETACH,
-            CascadeType.REFRESH
-    })
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     /**
@@ -64,7 +69,7 @@ public class Document {
      * документов, представляемых
      * в регистрирующий орган
      */
-    @OneToOne
-    @JoinColumn(name = "doc_type_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doc_type_id", nullable = false)
     private DocumentType docType;
 }
