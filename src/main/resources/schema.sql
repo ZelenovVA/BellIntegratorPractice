@@ -6,19 +6,10 @@ citizenship_code VARCHAR(5) NOT NULL             COMMENT 'Код государ�
 citizenship_name VARCHAR (100) NOT NULL          COMMENT 'Название государтсва',
 CONSTRAINT          PK_country_id PRIMARY KEY Country(id);
 CREATE UNIQUE INDEX UX_Country_id ON          Country(id);
-=======
-id INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор' ,
-version INTEGER COMMENT 'Служебное поле Hibernate',
-citizenship_code VARCHAR(5) NOT NULL COMMENT 'Код государтсва',
-citizenship_name VARCHAR (100) NOT NULL COMMENT 'Название государтсва',
-CONSTRAINT PK_country_id PRIMARY KEY Country(id),
-CREATE UNIQUE INDEX UX_Country_id ON Country(id);
->>>>>>> dd971b32d84ca91d858b3cfca09fc0bd62beec2a
 COMMENT ON TABLE Country IS 'Гражданство';
 -----------------------------------------------------------------------------
 -- Таблица типов документов, удостоверяющих личность --
 CREATE TABLE IF NOT EXISTS DocumentType(
-<<<<<<< HEAD
 id       INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор' ,
 version  INTEGER                         COMMENT 'Служебное поле Hibernate',
 doc_code VARCHAR(5) NOT NULL             COMMENT 'Код документа',
