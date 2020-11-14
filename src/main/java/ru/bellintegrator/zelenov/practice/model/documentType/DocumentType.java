@@ -39,11 +39,11 @@ public class DocumentType {
      * Код типа документа
      */
     @Column(name = "doc_code", length = 5, nullable = false)
-    private String code;
+    private String docCode;
 
     /**
      * Наименование типа документа
      */
     @Column(name = "doc_name", length = 150, nullable = false)
-    private String name;
+    private String docName;
 }
