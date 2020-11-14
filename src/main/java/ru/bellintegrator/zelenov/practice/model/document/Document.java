@@ -41,7 +41,7 @@ public class Document {
      * Имя документа
      */
     @Column(name = "doc_name", length = 50)
-    private String name;
+    private String docName;
 
     /**
      * Номер документа
