@@ -3,8 +3,10 @@ package ru.bellintegrator.zelenov.practice.model.user;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.bellintegrator.zelenov.practice.model.country.Country;
+import ru.bellintegrator.zelenov.practice.model.document.Document;
 import ru.bellintegrator.zelenov.practice.model.office.Office;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -78,6 +81,12 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "office_id", nullable = false)
     private Office office;
+
+    /**
+     * Документ, удовстоверяющий личность пользователя
+     */
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.ALL, optional = false)
+    private Document userDocument;
 
     /**
      * Гражданство пользователя
