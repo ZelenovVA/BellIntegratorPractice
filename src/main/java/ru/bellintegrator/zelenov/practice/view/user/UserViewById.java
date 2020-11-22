@@ -1,21 +1,19 @@
 package ru.bellintegrator.zelenov.practice.view.user;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-public class UserUpdateView {
+@Data
+public class UserViewById {
 
     /**
      * Уникальный идентификатор пользователя
      */
     @NotNull(message = "Данное поле не может быть пустым!")
     private Long id;
-
-    /**
-     * Офис, за которым закреплен пользователь
-     */
-    private Long officeId;
 
     /**
      * Имя
@@ -71,6 +69,12 @@ public class UserUpdateView {
      */
     @Size(max = 5)
     private String citizenshipCode;
+
+    /**
+     * Код страны
+     */
+    @Size(max = 100)
+    private String citizenshipName;
 
     /**
      * Флаг идентификации

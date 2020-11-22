@@ -1,11 +1,14 @@
 package ru.bellintegrator.zelenov.practice.view.office;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
  * Входящий view объект офиса
  */
+@Data
 public class OfficeListViewIn {
     /**
      * уникальный идентификатор организации, за которой закреплен офис

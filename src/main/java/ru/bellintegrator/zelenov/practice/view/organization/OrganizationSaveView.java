@@ -54,5 +54,5 @@ public class OrganizationSaveView {
     /**
      * Флаг активности
      */
-    private boolean isActive=true;
+    private Boolean isActive=true;
 }

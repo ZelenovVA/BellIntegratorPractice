@@ -6,11 +6,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * View объект для изменения
+ * View объект для получения по уникальному идентификатору
  */
 @Data
-public class OfficeUpdateView {
-
+public class OfficeViewById {
     /**
      * уникальный идентификатор офиса
      */

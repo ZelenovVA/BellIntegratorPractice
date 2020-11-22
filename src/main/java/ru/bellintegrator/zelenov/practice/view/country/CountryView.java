@@ -1,11 +1,14 @@
 package ru.bellintegrator.zelenov.practice.view.country;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
  * View объект гражданства для отправки клиенту
  */
+@Data
 public class CountryView {
 
     /**

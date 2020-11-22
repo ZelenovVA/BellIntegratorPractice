@@ -1,11 +1,14 @@
 package ru.bellintegrator.zelenov.practice.view.documentType;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
  * View объект типа документа для отправки клиенту
  */
+@Data
 public class DocumentTypeView {
 
     /**
