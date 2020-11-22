@@ -4,6 +4,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+/**
+ * Объект пользователя для сохранения
+ */
 public class UserSaveView {
 
     /**
@@ -76,5 +79,5 @@ public class UserSaveView {
     /**
      * Флаг идентификации
      */
-    private boolean isIdentified;
+    private Boolean isIdentified;
 }

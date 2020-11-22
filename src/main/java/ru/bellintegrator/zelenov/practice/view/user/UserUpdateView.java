@@ -1,9 +1,15 @@
 package ru.bellintegrator.zelenov.practice.view.user;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+/**
+ * Объект пользователя для изменения
+ */
+@Data
 public class UserUpdateView {
 
     /**

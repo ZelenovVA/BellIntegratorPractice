@@ -1,10 +1,13 @@
 package ru.bellintegrator.zelenov.practice.view.user;
 
+import lombok.Data;
+
 import javax.validation.constraints.Size;
 
 /**
  * Объект пользователя для отправки клиенту
  */
+@Data
 public class UserListViewOut {
 
     /**

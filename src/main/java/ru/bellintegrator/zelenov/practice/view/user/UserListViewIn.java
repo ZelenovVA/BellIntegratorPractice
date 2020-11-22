@@ -1,11 +1,14 @@
 package ru.bellintegrator.zelenov.practice.view.user;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
  * Входящий объект пользователя
  */
+@Data
 public class UserListViewIn {
 
     /**
