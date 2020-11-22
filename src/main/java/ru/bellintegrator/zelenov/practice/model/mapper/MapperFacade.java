@@ -3,7 +3,7 @@ package ru.bellintegrator.zelenov.practice.model.mapper;
 import java.util.List;
 
 /**
- * Фасад для преобразования входящих View объектов в объекты Entity
+ * Фасад для преобразования View объектов в объекты Entity и обратно
  */
 public interface MapperFacade {
 

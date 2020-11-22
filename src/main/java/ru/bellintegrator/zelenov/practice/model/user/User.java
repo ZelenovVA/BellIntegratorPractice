@@ -70,7 +70,7 @@ public class User {
      * Флаг идентификации
      */
     @Column(name = "is_identified")
-    private boolean isIdentified;
+    private Boolean isIdentified;
 
     /**
      * Офис, за которым закреплен сотрудник
