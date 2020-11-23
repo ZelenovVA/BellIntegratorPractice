@@ -34,7 +34,7 @@ public class OfficeDaoImpl implements OfficeDao {
         CriteriaQuery<Office> criteriaQuery=builder.createQuery(Office.class);
         Root<Office> officeRoot=criteriaQuery.from(Office.class);
         //Фильтр по уникальному идентификатору организации
-        Predicate filter=builder.equal(officeRoot.get("org_id"), office.getOrganization().getId());
+        Predicate filter=builder.equal(officeRoot.get("organization").get("id"), office.getOrganization().getId());
         //Фильтр по имени
         if (office.getName()!=null&&office.getName().length()>0){
             filter=builder.and(filter, builder.like(officeRoot.get("name"), "%"+office.getName()+"%"));
@@ -45,11 +45,7 @@ public class OfficeDaoImpl implements OfficeDao {
         };
         //Фильтр по активности
         if (office.getIsActive()!=null){
-            if (office.getIsActive()){
-                filter=builder.and(filter, builder.isTrue(officeRoot.get("isActive")));
-            } else {
-                filter=builder.and(filter, builder.isFalse(officeRoot.get("isActive")));
-            }
+                filter=builder.and(filter, builder.equal(officeRoot.get("isActive"), office.getIsActive()));
         };
         criteriaQuery.select(officeRoot).where(filter);
         TypedQuery<Office> query=em.createQuery(criteriaQuery);

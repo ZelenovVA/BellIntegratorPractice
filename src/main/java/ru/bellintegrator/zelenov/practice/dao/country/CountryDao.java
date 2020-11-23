@@ -22,6 +22,13 @@ public interface CountryDao {
     Country getCountryById(Long id);
 
     /**
+     * Поиск страны по коду
+     * @param citizenshipCode код страны
+     * @return страна, соответствующая коду
+     */
+    Country getCountryByCitizenshipCode(String citizenshipCode);
+
+    /**
      * Сохранение страны страну
      * @param country страна, которую требуется сохранить
      */

@@ -23,6 +23,13 @@ public interface DocumentTypeDao {
     DocumentType getDocTypeById(Long id);
 
     /**
+     * Получение типа документа по коду
+     * @param docCode код документа
+     * @return документ
+     */
+    DocumentType getDocTypeByDocCode(String docCode);
+
+    /**
      * Добавление типа документа
      * @param documentType тип документа, который нужно добавить
      */

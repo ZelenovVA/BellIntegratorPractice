@@ -6,6 +6,10 @@ import ru.bellintegrator.zelenov.practice.model.country.Country;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -35,6 +39,20 @@ public class CountryDaoImpl implements CountryDao {
     @Override
     public Country getCountryById(Long id) {
         return em.find(Country.class, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Country getCountryByCitizenshipCode(String citizenshipCode) {
+        CriteriaBuilder criteriaBuilder=em.getCriteriaBuilder();
+        CriteriaQuery<Country> query=criteriaBuilder.createQuery(Country.class);
+        Root<Country> countryRoot=query.from(Country.class);
+        Predicate filter=criteriaBuilder.equal(countryRoot.get("citizenshipCode"), citizenshipCode);
+        query.select(countryRoot).where(filter);
+        TypedQuery<Country> typedQuery=em.createQuery(query);
+        return typedQuery.getSingleResult();
     }
 
     /**

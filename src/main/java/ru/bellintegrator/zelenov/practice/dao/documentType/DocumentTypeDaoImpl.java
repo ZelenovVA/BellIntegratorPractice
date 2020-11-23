@@ -6,6 +6,10 @@ import ru.bellintegrator.zelenov.practice.model.documentType.DocumentType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -35,6 +39,20 @@ public class DocumentTypeDaoImpl implements DocumentTypeDao {
     @Override
     public DocumentType getDocTypeById(Long id) {
         return em.find(DocumentType.class, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DocumentType getDocTypeByDocCode(String docCode) {
+        CriteriaBuilder criteriaBuilder=em.getCriteriaBuilder();
+        CriteriaQuery<DocumentType> query=criteriaBuilder.createQuery(DocumentType.class);
+        Root<DocumentType> documentTypeRoot=query.from(DocumentType.class);
+        Predicate filter=criteriaBuilder.equal(documentTypeRoot.get("docCode"), docCode);
+        query.select(documentTypeRoot).where(filter);
+        TypedQuery<DocumentType> typedQuery=em.createQuery(query);
+        return typedQuery.getSingleResult();
     }
 
     /**

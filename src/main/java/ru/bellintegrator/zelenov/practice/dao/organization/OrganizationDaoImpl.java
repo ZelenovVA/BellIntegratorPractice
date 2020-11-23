@@ -41,11 +41,7 @@ public class OrganizationDaoImpl implements OrganizationDao{
         };
         //Фильтр по активности
         if (organization.getIsActive()!=null){
-            if (organization.getIsActive()){
-                filter=builder.and(filter, builder.isTrue(organizationRoot.get("isActive")));
-            } else {
-                filter=builder.and(filter, builder.isFalse(organizationRoot.get("isActive")));
-            }
+                filter=builder.and(filter, builder.equal(organizationRoot.get("isActive"),organization.getIsActive()));
         };
         criteriaQuery.select(organizationRoot).where(filter);
         TypedQuery<Organization> query=em.createQuery(criteriaQuery);
