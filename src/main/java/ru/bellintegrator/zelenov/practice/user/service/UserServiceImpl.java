@@ -91,20 +91,26 @@ public class UserServiceImpl implements UserService {
     private User mapUserViewListInToEntity(UserListViewIn userListViewIn) {
         User user = new User();
         user.setOffice(officeDao.getOfficeById(userListViewIn.getOfficeId()));
-        user.setFirstName(userListViewIn.getFirstName());
-        user.setSecondName(userListViewIn.getSecondName());
-        user.setMiddleName(userListViewIn.getMiddleName());
-        user.setPosition(userListViewIn.getPosition());
-        DocumentType documentType = documentTypeDao.getDocTypeByDocCode(userListViewIn.getDocCode());
-        Document document = new Document();
-        if (documentType != null) {
-            document.setDocType(documentType);
+        if (userListViewIn.getFirstName() != null) {
+            user.setFirstName(userListViewIn.getFirstName());
         }
-        if (document != null) {
+        if (userListViewIn.getSecondName() != null) {
+            user.setSecondName(userListViewIn.getSecondName());
+        }
+        if (userListViewIn.getMiddleName() != null) {
+            user.setMiddleName(userListViewIn.getMiddleName());
+        }
+        if (userListViewIn.getPosition() != null) {
+            user.setPosition(userListViewIn.getPosition());
+        }
+        if (userListViewIn.getDocCode() != null) {
+            DocumentType documentType = documentTypeDao.getDocTypeByDocCode(userListViewIn.getDocCode());
+            Document document = new Document();
+            document.setDocType(documentType);
             user.setUserDocument(document);
         }
-        Country country = countryDao.getCountryByCitizenshipCode(userListViewIn.getCitizenshipCode());
-        if (country != null) {
+        if (userListViewIn.getCitizenshipCode() != null) {
+            Country country = countryDao.getCountryByCitizenshipCode(userListViewIn.getCitizenshipCode());
             user.setCountry(country);
         }
         return user;
@@ -128,25 +134,35 @@ public class UserServiceImpl implements UserService {
     }
 
     private User mapViewUpdateToEntity(UserUpdateView userUpdateView) {
-        User user = new User();
-        user.setId(userUpdateView.getId());
-        user.setOffice(officeDao.getOfficeById(userUpdateView.getOfficeId()));
+        User user = userDao.getUserById(userUpdateView.getId());
+        if (userUpdateView.getOfficeId() != null) {
+            user.setOffice(officeDao.getOfficeById(userUpdateView.getOfficeId()));
+        }
         user.setFirstName(userUpdateView.getFirstName());
-        user.setSecondName(userUpdateView.getSecondName());
-        user.setMiddleName(userUpdateView.getMiddleName());
+        if (userUpdateView.getFirstName() != null) {
+            user.setSecondName(userUpdateView.getSecondName());
+        }
+        if (userUpdateView.getMiddleName() != null) {
+            user.setMiddleName(userUpdateView.getMiddleName());
+        }
         user.setPosition(userUpdateView.getPosition());
-        user.setPhone(userUpdateView.getPhone());
+        if (userUpdateView.getPhone() != null) {
+            user.setPhone(userUpdateView.getPhone());
+        }
         user.setIsIdentified(userUpdateView.getIsIdentified());
-        Country country = countryDao.getCountryByCitizenshipCode(userUpdateView.getCitizenshipCode());
-        if (country != null) {
+        if (userUpdateView.getCitizenshipCode() != null) {
+            Country country = countryDao.getCountryByCitizenshipCode(userUpdateView.getCitizenshipCode());
             user.setCountry(country);
         }
-        Document document = new Document();
-        document.setDocName(userUpdateView.getDocName());
-        document.setDocNumber(userUpdateView.getDocNumber());
-        document.setDocDate(userUpdateView.getDocDate());
-        if (document != null) {
-            user.setUserDocument(document);
+        Document document = user.getUserDocument();
+        if (userUpdateView.getDocName() != null) {
+            document.setDocName(userUpdateView.getDocName());
+        }
+        if (userUpdateView.getDocNumber() != null) {
+            document.setDocNumber(userUpdateView.getDocNumber());
+        }
+        if (userUpdateView.getDocDate() != null) {
+            document.setDocDate(userUpdateView.getDocDate());
         }
         return user;
     }
@@ -155,25 +171,49 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setOffice(officeDao.getOfficeById(userSaveView.getOfficeId()));
         user.setFirstName(userSaveView.getFirstName());
-        user.setSecondName(userSaveView.getSecondName());
-        user.setMiddleName(userSaveView.getMiddleName());
+        if (userSaveView.getSecondName() != null) {
+            user.setSecondName(userSaveView.getSecondName());
+        }
+        if (userSaveView.getMiddleName() != null) {
+            user.setMiddleName(userSaveView.getMiddleName());
+        }
         user.setPosition(userSaveView.getPosition());
-        user.setPhone(userSaveView.getPhone());
+        if (userSaveView.getPosition() != null) {
+            user.setPhone(userSaveView.getPhone());
+        }
         user.setIsIdentified(userSaveView.getIsIdentified());
-        Country country = countryDao.getCountryByCitizenshipCode(userSaveView.getCitizenshipCode());
-        if (country != null) {
+        if (userSaveView.getCitizenshipCode() != null) {
+            Country country = countryDao.getCountryByCitizenshipCode(userSaveView.getCitizenshipCode());
             user.setCountry(country);
         }
-        DocumentType documentType = documentTypeDao.getDocTypeByDocCode(userSaveView.getDocCode());
-        Document document = new Document();
-        if (documentType != null) {
+        if (userSaveView.getDocCode() != null) {
+            DocumentType documentType = documentTypeDao.getDocTypeByDocCode(userSaveView.getDocCode());
+            Document document = new Document();
             document.setDocType(documentType);
         }
-        document.setDocName(userSaveView.getDocName());
-        document.setDocNumber(userSaveView.getDocNumber());
-        document.setDocDate(userSaveView.getDocDate());
-        if (document != null) {
-            user.setUserDocument(document);
+        if (user.getUserDocument() != null) {
+            Document document = user.getUserDocument();
+            if (userSaveView.getDocNumber() != null) {
+                document.setDocNumber(userSaveView.getDocNumber());
+            }
+            if (userSaveView.getDocNumber() != null) {
+                document.setDocNumber(userSaveView.getDocNumber());
+            }
+            if (userSaveView.getDocDate() != null) {
+                document.setDocDate(userSaveView.getDocDate());
+            }
+        } else {
+            Document newDocument = new Document();
+            if (userSaveView.getDocNumber() != null) {
+                newDocument.setDocNumber(userSaveView.getDocNumber());
+            }
+            if (userSaveView.getDocNumber() != null) {
+                newDocument.setDocNumber(userSaveView.getDocNumber());
+            }
+            if (userSaveView.getDocDate() != null) {
+                newDocument.setDocDate(userSaveView.getDocDate());
+            }
+            user.setUserDocument(newDocument);
         }
         return user;
     }

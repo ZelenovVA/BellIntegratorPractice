@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Объект пользователя для сохранения
@@ -71,7 +72,7 @@ public class UserSaveView {
     /**
      * Дата выдачи документа
      */
-    private LocalDate docDate;
+    private Date docDate;
 
     /**
      * Код страны
