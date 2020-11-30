@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Документ, удостоверяющий личность
@@ -54,7 +54,7 @@ public class Document {
      */
     @Column(name = "doc_date")
     @Temporal(TemporalType.DATE)
-    private LocalDate docDate;
+    private Date docDate;
 
     /**
      * Пользователь, которому принадлежит документ

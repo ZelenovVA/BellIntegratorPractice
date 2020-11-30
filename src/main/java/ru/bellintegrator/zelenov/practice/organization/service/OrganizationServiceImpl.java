@@ -3,6 +3,7 @@ package ru.bellintegrator.zelenov.practice.organization.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bellintegrator.zelenov.practice.exception.DataNotFoundException;
 import ru.bellintegrator.zelenov.practice.organization.dao.OrganizationDao;
 import ru.bellintegrator.zelenov.practice.organization.model.Organization;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListViewIn;
@@ -10,6 +11,7 @@ import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListView
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationSaveView;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationUpdateView;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -31,9 +33,12 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OrganizationListViewOut> getOrganizations(OrganizationListViewIn filter) {
-        return organizationDao
-                .getAllOrganizations(mapViewListInToEntity(filter))
+    public List<OrganizationListViewOut> getOrganizations(@Valid OrganizationListViewIn filter) {
+        List<Organization> organizations = organizationDao.getAllOrganizations(mapViewListInToEntity(filter));
+        if (organizations.isEmpty()) {
+            throw new DataNotFoundException("Организации с данными параметрами отсутствуют");
+        }
+        return organizations
                 .stream()
                 .map(mapEntityToViewListOut())
                 .collect(Collectors.toList());
@@ -45,6 +50,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     @Transactional(readOnly = true)
     public Organization getOrganizationById(Long id) {
+        Organization organization = organizationDao.getOrganizationById(id);
+        if (organization == null) {
+            throw new DataNotFoundException("Организация с данным id не найдена");
+        }
         return organizationDao.getOrganizationById(id);
     }
 
@@ -53,7 +62,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     @Transactional
-    public void updateOrganization(OrganizationUpdateView organizationUpdateView) {
+    public void updateOrganization(@Valid OrganizationUpdateView organizationUpdateView) {
         organizationDao.updateOrganization(mapOrganizationUpdateViewToEntity(organizationUpdateView));
     }
 
@@ -62,7 +71,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     @Transactional
-    public void saveOrganization(OrganizationSaveView organizationSaveView) {
+    public void saveOrganization(@Valid OrganizationSaveView organizationSaveView) {
         organizationDao.saveOrganization(mapOrganizationSaveViewToEntity(organizationSaveView));
     }
 
@@ -79,20 +88,27 @@ public class OrganizationServiceImpl implements OrganizationService {
     private Organization mapViewListInToEntity(OrganizationListViewIn organizationListViewIn) {
         Organization organization = new Organization();
         organization.setName(organizationListViewIn.getName());
-        organization.setInn(organizationListViewIn.getInn());
+        if (organizationListViewIn.getInn() != null) {
+            organization.setInn(organizationListViewIn.getInn());
+        }
         organization.setIsActive(organizationListViewIn.getIsActive());
         return organization;
     }
 
     private Organization mapOrganizationUpdateViewToEntity(OrganizationUpdateView organizationUpdateView) {
-        Organization organization = new Organization();
-        organization.setId(organizationUpdateView.getId());
+        Organization organization = organizationDao.getOrganizationById(organizationUpdateView.getId());
+        if (organization == null) {
+            throw new DataNotFoundException("Организация с данным id не найдена");
+        }
         organization.setName(organizationUpdateView.getName());
         organization.setFullName(organizationUpdateView.getFullName());
         organization.setInn(organizationUpdateView.getInn());
         organization.setKpp(organizationUpdateView.getKpp());
         organization.setAddress(organizationUpdateView.getAddress());
-        organization.setPhone(organizationUpdateView.getPhone());
+        if (organizationUpdateView.getPhone() != null) {
+            organization.setPhone(organizationUpdateView.getPhone());
+        }
+        ;
         organization.setIsActive(organizationUpdateView.getIsActive());
         return organization;
     }
@@ -104,7 +120,9 @@ public class OrganizationServiceImpl implements OrganizationService {
         organization.setInn(organizationSaveView.getInn());
         organization.setKpp(organizationSaveView.getKpp());
         organization.setAddress(organizationSaveView.getAddress());
-        organization.setPhone(organizationSaveView.getPhone());
+        if (organizationSaveView.getPhone() != null) {
+            organization.setPhone(organizationSaveView.getPhone());
+        }
         organization.setIsActive(organizationSaveView.getIsActive());
         return organization;
     }

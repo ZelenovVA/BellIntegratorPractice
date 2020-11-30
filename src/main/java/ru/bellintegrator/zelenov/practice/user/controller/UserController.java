@@ -1,5 +1,7 @@
 package ru.bellintegrator.zelenov.practice.user.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,8 @@ import java.util.List;
  * Контроллер для работы с пользователем
  */
 @RestController
-@RequestMapping(value = "/api/user/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(value = "User")
 public class UserController {
     private final UserService userService;
 
@@ -36,7 +39,8 @@ public class UserController {
      * @param filter фильтр
      * @return список пользователей
      */
-    @PostMapping("list")
+    @PostMapping("/list")
+    @ApiOperation(value = "Get all users", httpMethod = "POST")
     public List<UserListViewOut> getAllUsers(@RequestBody UserListViewIn filter) {
         return userService.getAllUsers(filter);
     }
@@ -47,7 +51,8 @@ public class UserController {
      * @param id уникальный идентификатор пользователя
      * @return пользователь
      */
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Get user by id", httpMethod = "GET")
     public UserViewById getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
@@ -57,7 +62,8 @@ public class UserController {
      *
      * @param userUpdateView пользователь, данные коттрого требуется изменить
      */
-    @PostMapping("update")
+    @PostMapping("/update")
+    @ApiOperation(value = "Update user", httpMethod = "POST")
     public void updateUser(@RequestBody UserUpdateView userUpdateView) {
         userService.updateUser(userUpdateView);
     }
@@ -67,7 +73,8 @@ public class UserController {
      *
      * @param userSaveView пользователь, которого требуется сохранить
      */
-    @PostMapping("save")
+    @PostMapping("/save")
+    @ApiOperation(value = "Save user", httpMethod = "POST")
     public void saveUser(@RequestBody UserSaveView userSaveView) {
         userService.saveUser(userSaveView);
     }

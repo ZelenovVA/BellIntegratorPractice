@@ -1,5 +1,7 @@
 package ru.bellintegrator.zelenov.practice.organization.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/api/organization/", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(value = "Organization")
 public class OrganizationController {
     private final OrganizationService organizationService;
 
@@ -37,6 +40,7 @@ public class OrganizationController {
      * @return список организаций
      */
     @PostMapping("list")
+    @ApiOperation(value = "Get all organizations", httpMethod = "POST")
     public List<OrganizationListViewOut> getAllOrganizations(@RequestBody OrganizationListViewIn organizationListViewIn) {
         return organizationService.getOrganizations(organizationListViewIn);
     }
@@ -48,6 +52,7 @@ public class OrganizationController {
      * @return организация
      */
     @GetMapping("{id}")
+    @ApiOperation(value = "Get organization by id", httpMethod = "GET")
     public Organization getOrganizationById(@PathVariable("id") Long id) {
         return organizationService.getOrganizationById(id);
     }
@@ -59,6 +64,7 @@ public class OrganizationController {
      * @return результат операции
      */
     @PostMapping("update")
+    @ApiOperation(value = "Update organization", httpMethod = "POST")
     public void updateOrganization(@RequestBody OrganizationUpdateView organizationUpdateView) {
         organizationService.updateOrganization(organizationUpdateView);
     }
@@ -70,6 +76,7 @@ public class OrganizationController {
      * @return результат операции
      */
     @PostMapping("save")
+    @ApiOperation(value = "Save organization", httpMethod = "POST")
     public void saveOrganization(@RequestBody OrganizationSaveView organizationSaveView) {
         organizationService.saveOrganization(organizationSaveView);
     }

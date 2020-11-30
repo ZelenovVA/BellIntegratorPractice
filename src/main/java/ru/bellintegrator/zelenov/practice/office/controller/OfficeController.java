@@ -1,5 +1,7 @@
 package ru.bellintegrator.zelenov.practice.office.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/api/office/", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(value = "Office")
 public class OfficeController {
     private final OfficeService officeService;
 
@@ -37,6 +40,7 @@ public class OfficeController {
      * @return список офисов
      */
     @PostMapping("list")
+    @ApiOperation(value = "get all offices", httpMethod = "POST")
     public List<OfficeListViewOut> getAllOffices(@RequestBody OfficeListViewIn officeListViewIn) {
         return officeService.getAllOffices(officeListViewIn);
     }
@@ -48,6 +52,7 @@ public class OfficeController {
      * @return офис, соответствующий уникальному идентификатору
      */
     @GetMapping("{id}")
+    @ApiOperation(value = "Get office by id", httpMethod = "GET")
     public OfficeViewById getOfficeById(@PathVariable("id") Long id) {
         return officeService.getOfficeById(id);
     }
@@ -59,6 +64,7 @@ public class OfficeController {
      * @return
      */
     @PostMapping("update")
+    @ApiOperation(value = "Update office", httpMethod = "POST")
     public void updateOffice(@RequestBody OfficeUpdateView officeUpdateView) {
         officeService.updateOffice(officeUpdateView);
     }
@@ -70,6 +76,7 @@ public class OfficeController {
      * @return
      */
     @PostMapping("save")
+    @ApiOperation(value = "Save new office", httpMethod = "POST")
     public void saveOffice(@RequestBody OfficeSaveView officeSaveView) {
         officeService.saveOffice(officeSaveView);
     }

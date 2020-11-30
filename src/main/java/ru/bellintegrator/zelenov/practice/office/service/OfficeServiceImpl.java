@@ -3,6 +3,7 @@ package ru.bellintegrator.zelenov.practice.office.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bellintegrator.zelenov.practice.exception.DataNotFoundException;
 import ru.bellintegrator.zelenov.practice.office.dao.OfficeDao;
 import ru.bellintegrator.zelenov.practice.organization.dao.OrganizationDao;
 import ru.bellintegrator.zelenov.practice.office.model.Office;
@@ -11,6 +12,7 @@ import ru.bellintegrator.zelenov.practice.office.view.OfficeListViewOut;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeSaveView;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeUpdateView;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeViewById;
+import ru.bellintegrator.zelenov.practice.organization.model.Organization;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,8 +39,11 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     @Transactional(readOnly = true)
     public List<OfficeListViewOut> getAllOffices(@Valid OfficeListViewIn filter) {
-        return officeDao
-                .getAllOffices(mapViewListInToEntity(filter))
+        List<Office> offices = officeDao.getAllOffices(mapViewListInToEntity(filter));
+        if (offices == null) {
+            throw new DataNotFoundException("Офисы с данными параметрами не найдены");
+        }
+        return offices
                 .stream()
                 .map(mapEntityToViewListIn())
                 .collect(Collectors.toList());
@@ -50,7 +55,11 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     @Transactional(readOnly = true)
     public OfficeViewById getOfficeById(Long id) {
-        return mapEntityToViewById(officeDao.getOfficeById(id));
+        Office office = officeDao.getOfficeById(id);
+        if (office == null) {
+            throw new DataNotFoundException("Офис с данным id не существует");
+        }
+        return mapEntityToViewById(office);
     }
 
     /**
@@ -83,9 +92,17 @@ public class OfficeServiceImpl implements OfficeService {
 
     private Office mapViewListInToEntity(OfficeListViewIn officeListViewIn) {
         Office office = new Office();
-        office.setOrganization(organizationDao.getOrganizationById(officeListViewIn.getOrgId()));
-        office.setName(officeListViewIn.getName());
-        office.setPhone(officeListViewIn.getPhone());
+        Organization organization = organizationDao.getOrganizationById(officeListViewIn.getOrgId());
+        if (organization == null) {
+            throw new DataNotFoundException("Офис с данным id организации не найден");
+        }
+        office.setOrganization(organization);
+        if (officeListViewIn.getName() != null) {
+            office.setName(officeListViewIn.getName());
+        }
+        if (officeListViewIn.getPhone() != null) {
+            office.setPhone(officeListViewIn.getPhone());
+        }
         office.setIsActive(officeListViewIn.getIsActive());
         return office;
     }
@@ -101,21 +118,34 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     private Office mapUpdateViewToEntity(OfficeUpdateView officeUpdateView) {
-        Office office = new Office();
-        office.setId(officeUpdateView.getId());
+        Office office = officeDao.getOfficeById(officeUpdateView.getId());
+        if (office == null) {
+            throw new DataNotFoundException("Офис с данным id не найден");
+        }
         office.setName(officeUpdateView.getName());
         office.setAddress(officeUpdateView.getAddress());
-        office.setPhone(officeUpdateView.getPhone());
+        if (officeUpdateView.getPhone() != null) {
+            office.setPhone(officeUpdateView.getPhone());
+        }
         office.setIsActive(officeUpdateView.getIsActive());
         return office;
     }
 
     private Office mapSaveViewToEntity(OfficeSaveView officeSaveView) {
         Office office = new Office();
-        office.setOrganization(organizationDao.getOrganizationById(officeSaveView.getOrgId()));
-        office.setName(officeSaveView.getName());
-        office.setAddress(officeSaveView.getAddress());
-        office.setPhone(officeSaveView.getPhone());
+        Organization organization = organizationDao.getOrganizationById(officeSaveView.getOrgId());
+        if (organization == null) {
+            throw new DataNotFoundException("Организации с данным id не существует");
+        }
+        if (officeSaveView.getName() != null) {
+            office.setName(officeSaveView.getName());
+        }
+        if (officeSaveView.getAddress() != null) {
+            office.setAddress(officeSaveView.getAddress());
+        }
+        if (officeSaveView.getPhone() != null) {
+            office.setPhone(officeSaveView.getPhone());
+        }
         office.setIsActive(officeSaveView.getIsActive());
         return office;
     }
