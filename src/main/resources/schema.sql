@@ -8,13 +8,13 @@ CREATE UNIQUE INDEX UX_Country_id ON Country(id);
 COMMENT ON TABLE Country IS 'Гражданство';
 -----------------------------------------------------------------------------
 -- Таблица типов документов, удостоверяющих личность --
-CREATE TABLE IF NOT EXISTS DocumentType(
+CREATE TABLE IF NOT EXISTS Document_Type(
 id       INTEGER                COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
 version  INTEGER                COMMENT 'Служебное поле Hibernate',
 doc_code VARCHAR(5) NOT NULL    COMMENT 'Код документа',
 doc_name VARCHAR (150) NOT NULL COMMENT 'Наименование документа');
-CREATE UNIQUE INDEX UX_DocumentType_id ON DocumentType(id);
-COMMENT ON TABLE DocumentType IS 'Тип документа';
+CREATE UNIQUE INDEX UX_Document_Type_id ON Document_Type(id);
+COMMENT ON TABLE Document_Type IS 'Тип документа';
 -----------------------------------------------------------------------------
 --Таблица организаций --
 CREATE TABLE IF NOT EXISTS Organization(
@@ -88,4 +88,4 @@ ADD FOREIGN KEY (office_id) REFERENCES Office(id);
 ALTER TABLE User
 ADD FOREIGN KEY (country_id) REFERENCES Country(id);
 ALTER TABLE Document
-ADD FOREIGN KEY (doc_type_id) REFERENCES DocumentType(id);
+ADD FOREIGN KEY (doc_type_id) REFERENCES Document_Type(id);

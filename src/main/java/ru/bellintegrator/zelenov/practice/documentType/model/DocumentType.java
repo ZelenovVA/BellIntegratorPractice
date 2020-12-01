@@ -20,7 +20,7 @@ import javax.persistence.Version;
  */
 @Data
 @Entity
-@Table(name = "DocumentType")
+@Table(name = "Document_Type")
 @NoArgsConstructor
 public class DocumentType {
 
