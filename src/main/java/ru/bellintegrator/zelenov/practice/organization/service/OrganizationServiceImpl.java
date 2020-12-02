@@ -90,7 +90,9 @@ public class OrganizationServiceImpl implements OrganizationService {
         if (organizationListViewIn.getInn() != null) {
             organization.setInn(organizationListViewIn.getInn());
         }
-        organization.setIsActive(organizationListViewIn.getIsActive());
+        if (organizationListViewIn != null) {
+            organization.setIsActive(organizationListViewIn.getIsActive());
+        }
         return organization;
     }
 

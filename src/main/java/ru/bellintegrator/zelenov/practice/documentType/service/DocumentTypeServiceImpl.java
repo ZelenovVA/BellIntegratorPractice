@@ -40,8 +40,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     private Function<DocumentType, DocumentTypeView> mapDocumentType() {
         return documentType -> {
             DocumentTypeView documentTypeView = new DocumentTypeView();
-            documentTypeView.setDocCode(documentType.getDocCode());
-            documentTypeView.setDocName(documentType.getDocName());
+            documentTypeView.setCode(documentType.getDocCode());
+            documentTypeView.setName(documentType.getDocName());
             return documentTypeView;
         };
     }

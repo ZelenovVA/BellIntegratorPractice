@@ -57,7 +57,7 @@ public class Office {
      * Флаг активности
      */
     @Column(name = "is_active")
-    private Boolean isActive = true;
+    private Boolean isActive;
 
     /**
      * Организация, за которой закреплен офис

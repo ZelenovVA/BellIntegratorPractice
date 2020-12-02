@@ -24,5 +24,5 @@ public class OrganizationListViewOut {
     /**
      * Флаг активности
      */
-    private Boolean isActive = true;
+    private Boolean isActive;
 }

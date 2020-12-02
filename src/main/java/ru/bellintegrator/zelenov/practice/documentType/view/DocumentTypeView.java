@@ -12,16 +12,17 @@ import javax.validation.constraints.Size;
 public class DocumentTypeView {
 
     /**
-     * Код типа документа
-     */
-    @Size(max = 5)
-    @NotNull(message = "Данное поле не может быть пустым!")
-    private String docCode;
-
-    /**
      * Наименование типа документа
      */
     @Size(max = 150)
     @NotNull(message = "Данное поле не может быть пустым!")
-    private String docName;
+    private String name;
+
+    /**
+     * Код типа документа
+     */
+    @Size(max = 5)
+    @NotNull(message = "Данное поле не может быть пустым!")
+    private String code;
+
 }

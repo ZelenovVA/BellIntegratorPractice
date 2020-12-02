@@ -71,5 +71,5 @@ public class Organization {
      * Флаг активности
      */
     @Column(name = "is_active")
-    private Boolean isActive = true;
+    private Boolean isActive;
 }

@@ -27,5 +27,5 @@ public class OrganizationListViewIn {
     /**
      * Флаг активности
      */
-    private Boolean isActive = true;
+    private Boolean isActive;
 }

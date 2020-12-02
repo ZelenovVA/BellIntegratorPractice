@@ -39,8 +39,8 @@ public class CountryServiceImpl implements CountryService {
     private Function<Country, CountryView> mapCountry() {
         return country -> {
             CountryView countryView = new CountryView();
-            countryView.setCitizenshipCode(country.getCitizenshipCode());
-            countryView.setCitizenshipName(country.getCitizenshipName());
+            countryView.setCode(country.getCitizenshipCode());
+            countryView.setName(country.getCitizenshipName());
             return countryView;
         };
     }

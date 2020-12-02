@@ -21,11 +21,11 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
         return errorView;
     }
 
-    @ExceptionHandler({ConstraintViolationException.class, HttpMessageNotReadableException.class, HttpRequestMethodNotSupportedException.class})
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorView wrongRequest(ConstraintViolationException e) {
         ErrorView errorView = new ErrorView();
-        errorView.setError("Wrong request method or request parameters not valid");
+        errorView.setError("Request parameters not valid");
         return errorView;
     }
 

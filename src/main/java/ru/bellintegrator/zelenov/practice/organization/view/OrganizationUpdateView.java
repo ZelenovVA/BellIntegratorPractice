@@ -60,5 +60,5 @@ public class OrganizationUpdateView {
     /**
      * Флаг активности
      */
-    private Boolean isActive = true;
+    private Boolean isActive;
 }
