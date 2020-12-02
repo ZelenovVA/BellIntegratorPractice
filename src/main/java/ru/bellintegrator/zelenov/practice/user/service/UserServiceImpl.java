@@ -3,15 +3,15 @@ package ru.bellintegrator.zelenov.practice.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bellintegrator.zelenov.practice.country.dao.CountryDao;
+import ru.bellintegrator.zelenov.practice.country.model.Country;
 import ru.bellintegrator.zelenov.practice.document.dao.DocumentDao;
+import ru.bellintegrator.zelenov.practice.document.model.Document;
 import ru.bellintegrator.zelenov.practice.documentType.dao.DocumentTypeDao;
+import ru.bellintegrator.zelenov.practice.documentType.model.DocumentType;
 import ru.bellintegrator.zelenov.practice.exception.DataNotFoundException;
 import ru.bellintegrator.zelenov.practice.office.dao.OfficeDao;
 import ru.bellintegrator.zelenov.practice.office.model.Office;
 import ru.bellintegrator.zelenov.practice.user.dao.UserDao;
-import ru.bellintegrator.zelenov.practice.country.model.Country;
-import ru.bellintegrator.zelenov.practice.document.model.Document;
-import ru.bellintegrator.zelenov.practice.documentType.model.DocumentType;
 import ru.bellintegrator.zelenov.practice.user.model.User;
 import ru.bellintegrator.zelenov.practice.user.view.UserListViewIn;
 import ru.bellintegrator.zelenov.practice.user.view.UserListViewOut;
@@ -19,7 +19,6 @@ import ru.bellintegrator.zelenov.practice.user.view.UserSaveView;
 import ru.bellintegrator.zelenov.practice.user.view.UserUpdateView;
 import ru.bellintegrator.zelenov.practice.user.view.UserViewById;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -48,9 +47,9 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public List<UserListViewOut> getAllUsers(@Valid UserListViewIn filter) {
+    public List<UserListViewOut> getAllUsers(UserListViewIn filter) {
         List<User> users = userDao.getAllUsers(mapUserViewListInToEntity(filter));
-        if (users.isEmpty()) {
+        if (users.isEmpty() || users == null) {
             throw new DataNotFoundException("Пользователей с данными параметрами не существует");
         }
         return users
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public void updateUser(@Valid UserUpdateView userUpdateView) {
+    public void updateUser(UserUpdateView userUpdateView) {
         userDao.updateUser(mapViewUpdateToEntity(userUpdateView));
     }
 
@@ -79,7 +78,7 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public void saveUser(@Valid UserSaveView userSaveView) {
+    public void saveUser(UserSaveView userSaveView) {
         userDao.saveUser(mapViewSaveToEntity(userSaveView));
     }
 

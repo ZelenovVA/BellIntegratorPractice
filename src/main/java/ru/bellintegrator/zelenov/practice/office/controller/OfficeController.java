@@ -17,6 +17,7 @@ import ru.bellintegrator.zelenov.practice.office.view.OfficeSaveView;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeUpdateView;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeViewById;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class OfficeController {
      */
     @PostMapping("list")
     @ApiOperation(value = "get all offices", httpMethod = "POST")
-    public List<OfficeListViewOut> getAllOffices(@RequestBody OfficeListViewIn officeListViewIn) {
+    public List<OfficeListViewOut> getAllOffices(@Valid @RequestBody OfficeListViewIn officeListViewIn) {
         return officeService.getAllOffices(officeListViewIn);
     }
 
@@ -65,7 +66,7 @@ public class OfficeController {
      */
     @PostMapping("update")
     @ApiOperation(value = "Update office", httpMethod = "POST")
-    public void updateOffice(@RequestBody OfficeUpdateView officeUpdateView) {
+    public void updateOffice(@Valid @RequestBody OfficeUpdateView officeUpdateView) {
         officeService.updateOffice(officeUpdateView);
     }
 
@@ -77,7 +78,7 @@ public class OfficeController {
      */
     @PostMapping("save")
     @ApiOperation(value = "Save new office", httpMethod = "POST")
-    public void saveOffice(@RequestBody OfficeSaveView officeSaveView) {
+    public void saveOffice(@Valid @RequestBody OfficeSaveView officeSaveView) {
         officeService.saveOffice(officeSaveView);
     }
 }

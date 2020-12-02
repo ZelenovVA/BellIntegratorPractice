@@ -11,7 +11,6 @@ import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListView
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationSaveView;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationUpdateView;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -33,7 +32,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OrganizationListViewOut> getOrganizations(@Valid OrganizationListViewIn filter) {
+    public List<OrganizationListViewOut> getOrganizations(OrganizationListViewIn filter) {
         List<Organization> organizations = organizationDao.getAllOrganizations(mapViewListInToEntity(filter));
         if (organizations.isEmpty()) {
             throw new DataNotFoundException("Организации с данными параметрами отсутствуют");
@@ -62,7 +61,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     @Transactional
-    public void updateOrganization(@Valid OrganizationUpdateView organizationUpdateView) {
+    public void updateOrganization(OrganizationUpdateView organizationUpdateView) {
         organizationDao.updateOrganization(mapOrganizationUpdateViewToEntity(organizationUpdateView));
     }
 
@@ -71,7 +70,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     @Transactional
-    public void saveOrganization(@Valid OrganizationSaveView organizationSaveView) {
+    public void saveOrganization(OrganizationSaveView organizationSaveView) {
         organizationDao.saveOrganization(mapOrganizationSaveViewToEntity(organizationSaveView));
     }
 

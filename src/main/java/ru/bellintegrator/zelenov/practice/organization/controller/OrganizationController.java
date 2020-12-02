@@ -17,6 +17,7 @@ import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListView
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationSaveView;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationUpdateView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class OrganizationController {
      */
     @PostMapping("list")
     @ApiOperation(value = "Get all organizations", httpMethod = "POST")
-    public List<OrganizationListViewOut> getAllOrganizations(@RequestBody OrganizationListViewIn organizationListViewIn) {
+    public List<OrganizationListViewOut> getAllOrganizations(@Valid @RequestBody OrganizationListViewIn organizationListViewIn) {
         return organizationService.getOrganizations(organizationListViewIn);
     }
 
@@ -65,7 +66,7 @@ public class OrganizationController {
      */
     @PostMapping("update")
     @ApiOperation(value = "Update organization", httpMethod = "POST")
-    public void updateOrganization(@RequestBody OrganizationUpdateView organizationUpdateView) {
+    public void updateOrganization(@Valid @RequestBody OrganizationUpdateView organizationUpdateView) {
         organizationService.updateOrganization(organizationUpdateView);
     }
 
@@ -77,7 +78,7 @@ public class OrganizationController {
      */
     @PostMapping("save")
     @ApiOperation(value = "Save organization", httpMethod = "POST")
-    public void saveOrganization(@RequestBody OrganizationSaveView organizationSaveView) {
+    public void saveOrganization(@Valid @RequestBody OrganizationSaveView organizationSaveView) {
         organizationService.saveOrganization(organizationSaveView);
     }
 }

@@ -17,6 +17,7 @@ import ru.bellintegrator.zelenov.practice.user.view.UserSaveView;
 import ru.bellintegrator.zelenov.practice.user.view.UserUpdateView;
 import ru.bellintegrator.zelenov.practice.user.view.UserViewById;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class UserController {
      */
     @PostMapping("/list")
     @ApiOperation(value = "Get all users", httpMethod = "POST")
-    public List<UserListViewOut> getAllUsers(@RequestBody UserListViewIn filter) {
+    public List<UserListViewOut> getAllUsers(@Valid @RequestBody UserListViewIn filter) {
         return userService.getAllUsers(filter);
     }
 
@@ -64,7 +65,7 @@ public class UserController {
      */
     @PostMapping("/update")
     @ApiOperation(value = "Update user", httpMethod = "POST")
-    public void updateUser(@RequestBody UserUpdateView userUpdateView) {
+    public void updateUser(@Valid @RequestBody UserUpdateView userUpdateView) {
         userService.updateUser(userUpdateView);
     }
 
@@ -75,7 +76,7 @@ public class UserController {
      */
     @PostMapping("/save")
     @ApiOperation(value = "Save user", httpMethod = "POST")
-    public void saveUser(@RequestBody UserSaveView userSaveView) {
+    public void saveUser(@Valid @RequestBody UserSaveView userSaveView) {
         userService.saveUser(userSaveView);
     }
 }

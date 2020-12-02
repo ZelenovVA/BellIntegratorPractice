@@ -5,16 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bellintegrator.zelenov.practice.exception.DataNotFoundException;
 import ru.bellintegrator.zelenov.practice.office.dao.OfficeDao;
-import ru.bellintegrator.zelenov.practice.organization.dao.OrganizationDao;
 import ru.bellintegrator.zelenov.practice.office.model.Office;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeListViewIn;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeListViewOut;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeSaveView;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeUpdateView;
 import ru.bellintegrator.zelenov.practice.office.view.OfficeViewById;
+import ru.bellintegrator.zelenov.practice.organization.dao.OrganizationDao;
 import ru.bellintegrator.zelenov.practice.organization.model.Organization;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public class OfficeServiceImpl implements OfficeService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OfficeListViewOut> getAllOffices(@Valid OfficeListViewIn filter) {
+    public List<OfficeListViewOut> getAllOffices(OfficeListViewIn filter) {
         List<Office> offices = officeDao.getAllOffices(mapViewListInToEntity(filter));
         if (offices == null) {
             throw new DataNotFoundException("Офисы с данными параметрами не найдены");
@@ -67,7 +66,7 @@ public class OfficeServiceImpl implements OfficeService {
      */
     @Override
     @Transactional
-    public void updateOffice(@Valid OfficeUpdateView officeUpdateView) {
+    public void updateOffice(OfficeUpdateView officeUpdateView) {
         officeDao.updateOffice(mapUpdateViewToEntity(officeUpdateView));
     }
 
@@ -76,7 +75,7 @@ public class OfficeServiceImpl implements OfficeService {
      */
     @Override
     @Transactional
-    public void saveOffice(@Valid OfficeSaveView officeSaveView) {
+    public void saveOffice(OfficeSaveView officeSaveView) {
         officeDao.saveOffice(mapSaveViewToEntity(officeSaveView));
     }
 
