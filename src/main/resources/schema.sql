@@ -35,7 +35,7 @@ COMMENT ON TABLE Organization IS 'Организация';
 -----------------------------------------------------------------------------
 -- Таблица офисов --
 CREATE TABLE IF NOT EXISTS Office(
-id        INTEGER          COMMENT 'Уникальный идентификатор',
+id        INTEGER          COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
 version   INTEGER          COMMENT 'Служебное поле Hibernate',
 name      VARCHAR (50)     COMMENT 'Имя офиса',
 address   VARCHAR (150)    COMMENT 'Адрем офиса',
@@ -51,7 +51,7 @@ COMMENT ON TABLE Office IS 'Офис';
 -----------------------------------------------------------------------------------------------
 -- Таблица пользователей --
 CREATE TABLE IF NOT EXISTS User(
-id            INTEGER COMMENT 'Уникальный идентификатор пользователя',
+id            INTEGER                COMMENT 'Уникальный идентификатор пользователя' PRIMARY KEY AUTO_INCREMENT,
 version       INTEGER                COMMENT 'Служебное поле Hibernate',
 first_name    VARCHAR (50) NOT NULL  COMMENT 'Имя пользователя',
 second_name   VARCHAR (50)           COMMENT 'Фамилия пользователя',
@@ -64,14 +64,14 @@ country_id    INTEGER NOT NULL       COMMENT 'Уникальный иденти�
 CREATE UNIQUE INDEX UX_User_id ON             User(id);
 CREATE INDEX        IX_User_office_id ON      User(office_id);
 CREATE INDEX        IX_User_first_name ON     User(first_name);
-CREATE INDEX        IX_User_second_name ON      User(second_name);
+CREATE INDEX        IX_User_second_name ON    User(second_name);
 CREATE INDEX        IX_User_middle_name ON    User(middle_name);
 CREATE INDEX        IX_User_position ON       User(position);
 COMMENT ON TABLE User IS 'Пользователь';
 -----------------------------------------------------------------------------------------------
 -- Таблица документов, удостоверяющих личность пользователя--
 CREATE TABLE IF NOT EXISTS Document(
-user_id     INTEGER          COMMENT 'Уникальный идентификатор пользователя, которому принадлежит документ',
+user_id     INTEGER          COMMENT 'Уникальный идентификатор пользователя, которому принадлежит документ' PRIMARY KEY,
 version     INTEGER          COMMENT 'Служебное поле Hibernate',
 doc_name    VARCHAR (50)     COMMENT 'Имя документа',
 doc_number  VARCHAR(10)      COMMENT 'Номер документа',

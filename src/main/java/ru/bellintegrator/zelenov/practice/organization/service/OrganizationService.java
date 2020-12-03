@@ -1,10 +1,10 @@
 package ru.bellintegrator.zelenov.practice.organization.service;
 
-import ru.bellintegrator.zelenov.practice.organization.model.Organization;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListViewIn;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListViewOut;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationSaveView;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationUpdateView;
+import ru.bellintegrator.zelenov.practice.organization.view.OrganizationViewById;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public interface OrganizationService {
      * @param id уникальный идентификатор организации
      * @return организация
      */
-    Organization getOrganizationById(Long id);
+    OrganizationViewById getOrganizationById(Long id);
 
     /**
      * Изменение данных организации

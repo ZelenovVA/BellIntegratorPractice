@@ -16,6 +16,7 @@ import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListView
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListViewOut;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationSaveView;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationUpdateView;
+import ru.bellintegrator.zelenov.practice.organization.view.OrganizationViewById;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -54,7 +55,7 @@ public class OrganizationController {
      */
     @GetMapping("{id}")
     @ApiOperation(value = "Get organization by id", httpMethod = "GET")
-    public Organization getOrganizationById(@PathVariable("id") Long id) {
+    public OrganizationViewById getOrganizationById(@PathVariable("id") Long id) {
         return organizationService.getOrganizationById(id);
     }
 

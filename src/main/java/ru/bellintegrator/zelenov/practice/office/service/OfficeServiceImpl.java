@@ -136,6 +136,7 @@ public class OfficeServiceImpl implements OfficeService {
         if (organization == null) {
             throw new DataNotFoundException("Организации с данным id не существует");
         }
+        office.setOrganization(organization);
         if (officeSaveView.getName() != null) {
             office.setName(officeSaveView.getName());
         }
@@ -145,7 +146,9 @@ public class OfficeServiceImpl implements OfficeService {
         if (officeSaveView.getPhone() != null) {
             office.setPhone(officeSaveView.getPhone());
         }
-        office.setIsActive(officeSaveView.getIsActive());
+        if (officeSaveView.getIsActive() != null) {
+            office.setIsActive(officeSaveView.getIsActive());
+        }
         return office;
     }
 }

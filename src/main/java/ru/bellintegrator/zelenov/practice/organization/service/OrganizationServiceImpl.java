@@ -10,6 +10,7 @@ import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListView
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationListViewOut;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationSaveView;
 import ru.bellintegrator.zelenov.practice.organization.view.OrganizationUpdateView;
+import ru.bellintegrator.zelenov.practice.organization.view.OrganizationViewById;
 
 import java.util.List;
 import java.util.function.Function;
@@ -48,12 +49,12 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Organization getOrganizationById(Long id) {
+    public OrganizationViewById getOrganizationById(Long id) {
         Organization organization = organizationDao.getOrganizationById(id);
         if (organization == null) {
             throw new DataNotFoundException("Организация с данным id не найдена");
         }
-        return organizationDao.getOrganizationById(id);
+        return mapEntityToViewById(organization);
     }
 
     /**
@@ -94,6 +95,23 @@ public class OrganizationServiceImpl implements OrganizationService {
             organization.setIsActive(organizationListViewIn.getIsActive());
         }
         return organization;
+    }
+
+    private OrganizationViewById mapEntityToViewById(Organization organization) {
+        OrganizationViewById organizationViewById = new OrganizationViewById();
+        organizationViewById.setId(organization.getId());
+        organizationViewById.setName(organization.getName());
+        organizationViewById.setFullName(organization.getFullName());
+        organizationViewById.setInn(organization.getInn());
+        organizationViewById.setKpp(organization.getKpp());
+        organizationViewById.setAddress(organization.getAddress());
+        if (organization.getPhone() != null) {
+            organizationViewById.setPhone(organization.getPhone());
+        }
+        if (organization.getIsActive() != null) {
+            organizationViewById.setIsActive(organization.getIsActive());
+        }
+        return organizationViewById;
     }
 
     private Organization mapOrganizationUpdateViewToEntity(OrganizationUpdateView organizationUpdateView) {
