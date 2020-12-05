@@ -85,13 +85,13 @@ public class User {
     /**
      * Документ, удовстоверяющий личность пользователя
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private Document userDocument;
 
     /**
      * Гражданство пользователя
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_id")
     private Country country;
 }

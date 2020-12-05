@@ -35,6 +35,9 @@ public class OfficeDaoImpl implements OfficeDao {
         Root<Office> officeRoot = criteriaQuery.from(Office.class);
         //Фильтр по уникальному идентификатору организации
         Predicate filter = builder.equal(officeRoot.get("organization").get("id"), office.getOrganization().getId());
+        if (filter == null) {
+            throw new NullPointerException("Организация с данным id не найдена");
+        }
         //Фильтр по имени
         if (office.getName() != null && office.getName().length() > 0) {
             filter = builder.and(filter, builder.like(officeRoot.get("name"), "%" + office.getName() + "%"));

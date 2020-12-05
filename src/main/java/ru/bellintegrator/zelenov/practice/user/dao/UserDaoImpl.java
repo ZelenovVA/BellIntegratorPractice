@@ -3,6 +3,7 @@ package ru.bellintegrator.zelenov.practice.user.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.bellintegrator.zelenov.practice.document.model.Document;
+import ru.bellintegrator.zelenov.practice.exception.DataNotFoundException;
 import ru.bellintegrator.zelenov.practice.user.model.User;
 
 import javax.persistence.EntityManager;
@@ -34,6 +35,9 @@ public class UserDaoImpl implements UserDao {
         Root<Document> documentRoot = criteriaQuery.from(Document.class);
         //Фильтр по уникальному идентификатору офиса
         Predicate filter = builder.equal(userRoot.get("office").get("id"), user.getOffice().getId());
+        if (filter == null) {
+            throw new DataNotFoundException("Users with this office's id were not found");
+        }
         //Фильтр по имени
         if (user.getFirstName() != null && user.getFirstName().length() > 0) {
             filter = builder.and(filter, builder.like(userRoot.get("firstName"), "%" + user.getFirstName() + ""));
@@ -51,17 +55,17 @@ public class UserDaoImpl implements UserDao {
         ;
         //Фильтр по должности
         if (user.getPosition() != null && user.getPosition().length() > 0) {
-            filter = builder.and(filter, builder.like(userRoot.get("position"), "%" + user.getPosition() + ""));
+            filter = builder.and(filter, builder.like(userRoot.get("position"), "%" + user.getPosition() + "%"));
         }
         ;
         //Фильтр по коду документа
-        if (user.getUserDocument().getDocType().getDocCode() != null && user.getUserDocument().getDocType().getDocCode().length() > 0) {
+        if (user.getUserDocument() != null && user.getUserDocument().getDocType() != null && user.getUserDocument().getDocType().getDocCode() != null) {
             filter = builder.and(filter,
                     builder.like(userRoot.get("userDocument").get("documentType").get("docCode"),
                             "%" + user.getUserDocument().getDocType().getDocCode() + "%"));
         }
         //Фильтр по коду гражданству
-        if (user.getCountry().getCitizenshipCode() != null && user.getCountry().getCitizenshipCode().length() > 0) {
+        if (user.getCountry() != null && user.getCountry().getCitizenshipCode() != null) {
             filter = builder.and(filter, builder.like(userRoot.get("country").get("citizenshipCode"), "%" + user.getCountry().getCitizenshipCode() + "%"));
         }
         ;

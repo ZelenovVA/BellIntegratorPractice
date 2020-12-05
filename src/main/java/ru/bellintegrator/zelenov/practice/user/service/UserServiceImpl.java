@@ -1,6 +1,7 @@
 package ru.bellintegrator.zelenov.practice.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.bellintegrator.zelenov.practice.country.dao.CountryDao;
 import ru.bellintegrator.zelenov.practice.country.model.Country;
@@ -49,8 +50,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserListViewOut> getAllUsers(UserListViewIn filter) {
         List<User> users = userDao.getAllUsers(mapUserViewListInToEntity(filter));
-        if (users.isEmpty() || users == null) {
-            throw new DataNotFoundException("Пользователей с данными параметрами не существует");
+        if (users.isEmpty()) {
+            throw new DataNotFoundException("Users with these parameters were not found");
         }
         return users
                 .stream()
@@ -63,7 +64,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserViewById getUserById(Long id) {
-        return mapEntityToViewById(userDao.getUserById(id));
+        User user = this.userDao.getUserById(id);
+        if (user == null) {
+            throw new DataNotFoundException("User with this id was not found");
+        }
+        return mapEntityToViewById(user);
     }
 
     /**
@@ -98,8 +103,9 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         Office office = officeDao.getOfficeById(userListViewIn.getOfficeId());
         if (office == null) {
-            throw new DataNotFoundException("Офиса с данным id не существует");
+            throw new DataNotFoundException("Office with this id was not found");
         }
+        user.setOffice(office);
         if (userListViewIn.getFirstName() != null) {
             user.setFirstName(userListViewIn.getFirstName());
         }
@@ -113,18 +119,23 @@ public class UserServiceImpl implements UserService {
             user.setPosition(userListViewIn.getPosition());
         }
         if (userListViewIn.getDocCode() != null) {
-            DocumentType documentType = documentTypeDao.getDocTypeByDocCode(userListViewIn.getDocCode());
-            if (documentType == null) {
-                throw new DataNotFoundException("Данного типа документа не существует");
+            DocumentType documentType = null;
+            try {
+                documentTypeDao.getDocTypeByDocCode(userListViewIn.getDocCode());
+            } catch (EmptyResultDataAccessException e) {
+                throw new DataNotFoundException("Document type with this document code was not found");
             }
             Document document = new Document();
             document.setDocType(documentType);
             user.setUserDocument(document);
+            document.setUser(user);
         }
         if (userListViewIn.getCitizenshipCode() != null) {
-            Country country = countryDao.getCountryByCitizenshipCode(userListViewIn.getCitizenshipCode());
-            if (country == null) {
-                throw new DataNotFoundException("Данного гражданства не существует");
+            Country country = null;
+            try {
+                countryDao.getCountryByCitizenshipCode(userListViewIn.getCitizenshipCode());
+            } catch (EmptyResultDataAccessException e) {
+                throw new DataNotFoundException("Country with this citizenship code was not found");
             }
             user.setCountry(country);
         }
@@ -151,12 +162,12 @@ public class UserServiceImpl implements UserService {
     private User mapViewUpdateToEntity(UserUpdateView userUpdateView) {
         User user = userDao.getUserById(userUpdateView.getId());
         if (user == null) {
-            throw new DataNotFoundException("Пользователь с данным id не существует");
+            throw new DataNotFoundException("User with this id was not found");
         }
         if (userUpdateView.getOfficeId() != null) {
             Office office = officeDao.getOfficeById(userUpdateView.getOfficeId());
             if (office == null) {
-                throw new DataNotFoundException("Офис с данным id не существует");
+                throw new DataNotFoundException("Office with this id was not found");
             }
             user.setOffice(office);
         }
@@ -173,15 +184,19 @@ public class UserServiceImpl implements UserService {
         }
         user.setIsIdentified(userUpdateView.getIsIdentified());
         if (userUpdateView.getCitizenshipCode() != null) {
-            Country country = countryDao.getCountryByCitizenshipCode(userUpdateView.getCitizenshipCode());
-            if (country == null) {
-                throw new DataNotFoundException("Данного гражданства не существует");
+            Country country = null;
+            try {
+                countryDao.getCountryByCitizenshipCode(userUpdateView.getCitizenshipCode());
+            } catch (EmptyResultDataAccessException e) {
+                throw new DataNotFoundException("Country with this citizenship code was not found");
             }
             user.setCountry(country);
         }
         Document document = user.getUserDocument();
         if (document == null) {
-            throw new DataNotFoundException("Данного документа не существует");
+            document = new Document();
+            user.setUserDocument(document);
+            document.setUser(user);
         }
         if (userUpdateView.getDocName() != null) {
             document.setDocName(userUpdateView.getDocName());
@@ -199,8 +214,9 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         Office office = officeDao.getOfficeById(userSaveView.getOfficeId());
         if (office == null) {
-            throw new DataNotFoundException("Офиса с данным id не существует");
+            throw new DataNotFoundException("Office with this id was not found");
         }
+        user.setOffice(office);
         user.setFirstName(userSaveView.getFirstName());
         if (userSaveView.getSecondName() != null) {
             user.setSecondName(userSaveView.getSecondName());
@@ -209,24 +225,30 @@ public class UserServiceImpl implements UserService {
             user.setMiddleName(userSaveView.getMiddleName());
         }
         user.setPosition(userSaveView.getPosition());
-        if (userSaveView.getPosition() != null) {
+        if (userSaveView.getPhone() != null) {
             user.setPhone(userSaveView.getPhone());
         }
-        user.setIsIdentified(userSaveView.getIsIdentified());
+        if (userSaveView.getIsIdentified() != null) {
+            user.setIsIdentified(userSaveView.getIsIdentified());
+        }
         if (userSaveView.getCitizenshipCode() != null) {
-            Country country = countryDao.getCountryByCitizenshipCode(userSaveView.getCitizenshipCode());
-            if (country == null) {
-                throw new DataNotFoundException("Гражданства с данным кодом не существует");
+            Country country = null;
+            try {
+                countryDao.getCountryByCitizenshipCode(userSaveView.getCitizenshipCode());
+            } catch (EmptyResultDataAccessException e) {
+                throw new DataNotFoundException("Country with this citizenship code was not found");
             }
             user.setCountry(country);
         }
         if (userSaveView.getDocCode() != null) {
             DocumentType documentType = documentTypeDao.getDocTypeByDocCode(userSaveView.getDocCode());
             if (documentType == null) {
-                throw new DataNotFoundException("Типа документа с данным кодом не существует");
+                throw new DataNotFoundException("Document type with this document code was not found");
             }
             Document document = new Document();
             document.setDocType(documentType);
+            document.setUser(user);
+            user.setUserDocument(document);
         }
         if (user.getUserDocument() != null) {
             Document document = user.getUserDocument();
@@ -241,8 +263,8 @@ public class UserServiceImpl implements UserService {
             }
         } else {
             Document newDocument = new Document();
-            if (userSaveView.getDocNumber() != null) {
-                newDocument.setDocNumber(userSaveView.getDocNumber());
+            if (userSaveView.getDocName() != null) {
+                newDocument.setDocName(userSaveView.getDocName());
             }
             if (userSaveView.getDocNumber() != null) {
                 newDocument.setDocNumber(userSaveView.getDocNumber());
@@ -250,7 +272,10 @@ public class UserServiceImpl implements UserService {
             if (userSaveView.getDocDate() != null) {
                 newDocument.setDocDate(userSaveView.getDocDate());
             }
-            user.setUserDocument(newDocument);
+            if (newDocument.getDocNumber() != null || newDocument.getDocName() != null || newDocument.getDocDate() != null) {
+                newDocument.setUser(user);
+                user.setUserDocument(newDocument);
+            }
         }
         return user;
     }

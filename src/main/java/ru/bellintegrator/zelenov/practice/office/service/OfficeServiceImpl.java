@@ -39,8 +39,8 @@ public class OfficeServiceImpl implements OfficeService {
     @Transactional(readOnly = true)
     public List<OfficeListViewOut> getAllOffices(OfficeListViewIn filter) {
         List<Office> offices = officeDao.getAllOffices(mapViewListInToEntity(filter));
-        if (offices == null) {
-            throw new DataNotFoundException("Офисы с данными параметрами не найдены");
+        if (offices.isEmpty()) {
+            throw new DataNotFoundException("Offices with these parameters were not found");
         }
         return offices
                 .stream()
@@ -56,7 +56,7 @@ public class OfficeServiceImpl implements OfficeService {
     public OfficeViewById getOfficeById(Long id) {
         Office office = officeDao.getOfficeById(id);
         if (office == null) {
-            throw new DataNotFoundException("Офис с данным id не существует");
+            throw new DataNotFoundException("Office with this id was not found");
         }
         return mapEntityToViewById(office);
     }
@@ -93,7 +93,7 @@ public class OfficeServiceImpl implements OfficeService {
         Office office = new Office();
         Organization organization = organizationDao.getOrganizationById(officeListViewIn.getOrgId());
         if (organization == null) {
-            throw new DataNotFoundException("Офис с данным id организации не найден");
+            throw new DataNotFoundException("Organization with this id was not found");
         }
         office.setOrganization(organization);
         if (officeListViewIn.getName() != null) {
@@ -119,7 +119,7 @@ public class OfficeServiceImpl implements OfficeService {
     private Office mapUpdateViewToEntity(OfficeUpdateView officeUpdateView) {
         Office office = officeDao.getOfficeById(officeUpdateView.getId());
         if (office == null) {
-            throw new DataNotFoundException("Офис с данным id не найден");
+            throw new DataNotFoundException("Office with this id was not found");
         }
         office.setName(officeUpdateView.getName());
         office.setAddress(officeUpdateView.getAddress());
@@ -134,7 +134,7 @@ public class OfficeServiceImpl implements OfficeService {
         Office office = new Office();
         Organization organization = organizationDao.getOrganizationById(officeSaveView.getOrgId());
         if (organization == null) {
-            throw new DataNotFoundException("Организации с данным id не существует");
+            throw new DataNotFoundException("Organization with this id was not found");
         }
         office.setOrganization(organization);
         if (officeSaveView.getName() != null) {

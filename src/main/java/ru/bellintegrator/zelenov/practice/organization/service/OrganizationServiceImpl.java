@@ -36,7 +36,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<OrganizationListViewOut> getOrganizations(OrganizationListViewIn filter) {
         List<Organization> organizations = organizationDao.getAllOrganizations(mapViewListInToEntity(filter));
         if (organizations.isEmpty()) {
-            throw new DataNotFoundException("Организации с данными параметрами отсутствуют");
+            throw new DataNotFoundException("Organizations with these parameters were not found");
         }
         return organizations
                 .stream()
@@ -52,7 +52,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationViewById getOrganizationById(Long id) {
         Organization organization = organizationDao.getOrganizationById(id);
         if (organization == null) {
-            throw new DataNotFoundException("Организация с данным id не найдена");
+            throw new DataNotFoundException("Organization with this id was not found");
         }
         return mapEntityToViewById(organization);
     }
@@ -117,7 +117,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     private Organization mapOrganizationUpdateViewToEntity(OrganizationUpdateView organizationUpdateView) {
         Organization organization = organizationDao.getOrganizationById(organizationUpdateView.getId());
         if (organization == null) {
-            throw new DataNotFoundException("Организация с данным id не найдена");
+            throw new DataNotFoundException("Organization with this id was not found");
         }
         organization.setName(organizationUpdateView.getName());
         organization.setFullName(organizationUpdateView.getFullName());
