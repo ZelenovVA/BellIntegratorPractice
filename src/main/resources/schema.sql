@@ -60,7 +60,7 @@ position      VARCHAR (100) NOT NULL COMMENT 'Должность',
 phone         VARCHAR (11)           COMMENT 'Контактный номер телефона',
 is_identified BOOLEAN                COMMENT 'Флаг идентификации',
 office_id     INTEGER NOT NULL       COMMENT 'Уникальный идентификатор офиса',
-country_id    INTEGER NOT NULL       COMMENT 'Уникальный идентификатор гражданства');
+country_id    INTEGER                COMMENT 'Уникальный идентификатор гражданства');
 CREATE UNIQUE INDEX UX_User_id ON             User(id);
 CREATE INDEX        IX_User_office_id ON      User(office_id);
 CREATE INDEX        IX_User_first_name ON     User(first_name);
@@ -76,7 +76,7 @@ version     INTEGER          COMMENT 'Служебное поле Hibernate',
 doc_name    VARCHAR (50)     COMMENT 'Имя документа',
 doc_number  VARCHAR(10)      COMMENT 'Номер документа',
 doc_date    VARCHAR(10)      COMMENT 'Дата выдачи документа',
-doc_type_id INTEGER NOT NULL COMMENT 'Уникальный идентификатор типа документа');
+doc_type_id INTEGER          COMMENT 'Уникальный идентификатор типа документа');
 CREATE INDEX IX_Document_doc_type_id ON Document(doc_type_id);
 COMMENT ON TABLE Document IS 'Документ';
 -----------------------------------------------------------------------------------------------
