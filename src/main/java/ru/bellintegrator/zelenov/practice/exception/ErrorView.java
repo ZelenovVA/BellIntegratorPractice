@@ -6,5 +6,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ErrorView {
-    private String error;
+    private Object error;
 }
