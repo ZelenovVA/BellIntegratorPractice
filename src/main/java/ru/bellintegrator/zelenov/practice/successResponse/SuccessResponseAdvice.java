@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import ru.bellintegrator.zelenov.practice.exception.ErrorView;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = {"ru.bellintegrator.zelenov.practice"})
 public class SuccessResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
