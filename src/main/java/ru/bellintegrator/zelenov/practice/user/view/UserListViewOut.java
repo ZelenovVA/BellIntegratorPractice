@@ -46,4 +46,18 @@ public class UserListViewOut {
     @Size(max = 100)
     @ApiModelProperty(position = 5)
     private String position;
+
+    /**
+     * Код документа, удостоверяющего личность пользователя
+     */
+    @Size(max = 5)
+    @ApiModelProperty(position = 6)
+    private String docCode;
+
+    /**
+     * Код гражданства пользователя
+     */
+    @Size(max = 5)
+    @ApiModelProperty(position = 7)
+    private String citizenshipCode;
 }

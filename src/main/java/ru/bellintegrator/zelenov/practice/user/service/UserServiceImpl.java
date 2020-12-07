@@ -95,6 +95,12 @@ public class UserServiceImpl implements UserService {
             userListViewOut.setSecondName(user.getSecondName());
             userListViewOut.setMiddleName(user.getMiddleName());
             userListViewOut.setPosition(user.getPosition());
+            if (user.getUserDocument() != null && user.getUserDocument().getDocType() != null) {
+                userListViewOut.setDocCode(user.getUserDocument().getDocType().getDocCode());
+            }
+            if (user.getCountry() != null) {
+                userListViewOut.setCitizenshipCode(user.getCountry().getCitizenshipCode());
+            }
             return userListViewOut;
         };
     }
